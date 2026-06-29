@@ -1,0 +1,265 @@
+<div class="min-h-dvh bg-background text-foreground">
+  <div class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-8">
+    <!-- Header -->
+    <header class="flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <hlm-avatar size="lg">
+          <span hlmAvatarFallback class="bg-primary text-primary-foreground font-semibold">AC</span>
+        </hlm-avatar>
+        <div>
+          <h1 class="text-xl font-semibold tracking-tight">Acme Workspace</h1>
+          <p class="text-sm text-muted-foreground">Team & account settings</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button hlmBtn variant="outline" size="sm" [hlmTooltip]="isDark() ? 'Switch to light' : 'Switch to dark'" (click)="toggleTheme()">
+          {{ isDark() ? '☀ Light' : '☾ Dark' }}
+        </button>
+        <button hlmBtn variant="outline" size="sm">Invite</button>
+        <button hlmBtn size="sm">Upgrade</button>
+      </div>
+    </header>
+
+    <hlm-separator />
+
+    <!-- Stat cards -->
+    <section class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div hlmCard>
+        <div hlmCardHeader>
+          <h3 hlmCardTitle>Seat usage</h3>
+          <p hlmCardDescription>{{ members().length }} of {{ seatLimit() }} seats used</p>
+        </div>
+        <div hlmCardContent class="flex flex-col gap-2">
+          <hlm-progress [value]="seatUsage()">
+            <hlm-progress-indicator />
+          </hlm-progress>
+          <span class="text-sm text-muted-foreground">{{ seatUsage() }}% allocated</span>
+        </div>
+      </div>
+
+      <div hlmCard>
+        <div hlmCardHeader>
+          <h3 hlmCardTitle>Active members</h3>
+          <p hlmCardDescription>Currently enabled accounts</p>
+        </div>
+        <div hlmCardContent>
+          <span class="text-3xl font-semibold">{{ activeMembers() }}</span>
+          <span class="ms-1 text-sm text-muted-foreground">/ {{ members().length }}</span>
+        </div>
+      </div>
+
+      <div hlmCard>
+        <div hlmCardHeader>
+          <h3 hlmCardTitle>Current plan</h3>
+          <p hlmCardDescription>Billed annually</p>
+        </div>
+        <div hlmCardContent class="flex items-center gap-2">
+          <span hlmBadge class="capitalize">{{ plan() }}</span>
+          <span hlmBadge variant="outline">Annual</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <hlm-tabs tab="members" class="w-full">
+      <hlm-tabs-list class="w-full" aria-label="Workspace sections">
+        <button hlmTabsTrigger="members">Members</button>
+        <button hlmTabsTrigger="notifications">Notifications</button>
+        <button hlmTabsTrigger="billing">Billing</button>
+      </hlm-tabs-list>
+
+      <!-- Members tab -->
+      <div hlmTabsContent="members" class="flex flex-col gap-4 pt-4">
+        <div hlmAlert>
+          <h4 hlmAlertTitle>Team overview</h4>
+          <p hlmAlertDescription>Manage who has access to this workspace and their roles.</p>
+        </div>
+
+        <div hlmCard>
+          <div hlmCardContent class="pt-6">
+            <div hlmTableContainer>
+              <table hlmTable class="w-full">
+                <caption hlmCaption>Workspace members and their current status.</caption>
+                <thead hlmTHead>
+                  <tr hlmTr>
+                    <th hlmTh>Member</th>
+                    <th hlmTh>Role</th>
+                    <th hlmTh>Status</th>
+                    <th hlmTh class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody hlmTBody>
+                  @for (member of members(); track member.email) {
+                    <tr hlmTr>
+                      <td hlmTd>
+                        <div class="flex items-center gap-3">
+                          <hlm-avatar size="sm">
+                            <span hlmAvatarFallback>{{ member.initials }}</span>
+                          </hlm-avatar>
+                          <div class="flex flex-col">
+                            <span class="font-medium">{{ member.name }}</span>
+                            <span class="text-xs text-muted-foreground">{{ member.email }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td hlmTd>{{ member.role }}</td>
+                      <td hlmTd>
+                        <span hlmBadge [variant]="badgeVariant(member.status)" class="capitalize">
+                          {{ member.status }}
+                        </span>
+                      </td>
+                      <td hlmTd class="text-end">
+                        <button hlmBtn variant="ghost" size="sm">Manage</button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notifications tab -->
+      <div hlmTabsContent="notifications" class="pt-4">
+        <div hlmCard>
+          <div hlmCardHeader>
+            <h3 hlmCardTitle>Notification preferences</h3>
+            <p hlmCardDescription>Choose how this workspace reaches you.</p>
+          </div>
+          <div hlmCardContent class="flex flex-col gap-5">
+            <div class="flex items-center justify-between gap-4">
+              <label hlmLabel for="email-notif" class="flex flex-col items-start gap-1">
+                <span>Email notifications</span>
+                <span class="text-xs font-normal text-muted-foreground">Activity summaries to your inbox.</span>
+              </label>
+              <hlm-switch inputId="email-notif" [checked]="emailNotifications()" (checkedChange)="emailNotifications.set($event)" />
+            </div>
+            <hlm-separator />
+            <div class="flex items-center justify-between gap-4">
+              <label hlmLabel for="push-notif" class="flex flex-col items-start gap-1">
+                <span>Push notifications</span>
+                <span class="text-xs font-normal text-muted-foreground">Real-time alerts on your devices.</span>
+              </label>
+              <hlm-switch inputId="push-notif" [checked]="pushNotifications()" (checkedChange)="pushNotifications.set($event)" />
+            </div>
+            <hlm-separator />
+            <div class="flex flex-col gap-3">
+              <label hlmLabel for="digest" class="flex items-center gap-3">
+                <hlm-checkbox inputId="digest" [checked]="weeklyDigest()" (checkedChange)="weeklyDigest.set($event)" />
+                <span>Send me a weekly digest</span>
+              </label>
+              <label hlmLabel for="marketing" class="flex items-center gap-3">
+                <hlm-checkbox inputId="marketing" [checked]="marketingEmails()" (checkedChange)="marketingEmails.set($event)" />
+                <span>Receive product & marketing emails</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Billing tab -->
+      <div hlmTabsContent="billing" class="flex flex-col gap-4 pt-4">
+        <div hlmCard>
+          <div hlmCardHeader>
+            <h3 hlmCardTitle>Plan</h3>
+            <p hlmCardDescription>Pick the tier that fits your team.</p>
+          </div>
+          <div hlmCardContent>
+            <hlm-radio-group [value]="plan()" (valueChange)="plan.set($event)" class="gap-3">
+              <hlm-radio value="free">
+                <hlm-radio-indicator />
+                <span class="flex flex-col">
+                  <span class="font-medium">Free</span>
+                  <span class="text-xs text-muted-foreground">Up to 3 members</span>
+                </span>
+              </hlm-radio>
+              <hlm-radio value="pro">
+                <hlm-radio-indicator />
+                <span class="flex flex-col">
+                  <span class="font-medium">Pro</span>
+                  <span class="text-xs text-muted-foreground">Unlimited members, priority support</span>
+                </span>
+              </hlm-radio>
+              <hlm-radio value="enterprise">
+                <hlm-radio-indicator />
+                <span class="flex flex-col">
+                  <span class="font-medium">Enterprise</span>
+                  <span class="text-xs text-muted-foreground">SSO, audit logs, SLAs</span>
+                </span>
+              </hlm-radio>
+            </hlm-radio-group>
+          </div>
+        </div>
+
+        <div hlmCard>
+          <div hlmCardHeader>
+            <h3 hlmCardTitle>Workspace defaults</h3>
+            <p hlmCardDescription>Applied to newly invited members.</p>
+          </div>
+          <div hlmCardContent class="grid gap-5 sm:grid-cols-2">
+            <div class="flex flex-col gap-2">
+              <label hlmLabel for="ws-name">Workspace name</label>
+              <input hlmInput id="ws-name" value="Acme Workspace" placeholder="Workspace name" />
+            </div>
+            <div class="flex flex-col gap-2">
+              <label hlmLabel for="default-role">Default role</label>
+              <hlm-native-select [value]="defaultRole()" (valueChange)="defaultRole.set($event ?? '')">
+                <option hlmNativeSelectOption value="viewer">Viewer</option>
+                <option hlmNativeSelectOption value="developer">Developer</option>
+                <option hlmNativeSelectOption value="admin">Admin</option>
+              </hlm-native-select>
+            </div>
+            <div class="flex flex-col gap-2 sm:col-span-2">
+              <label hlmLabel for="seat-limit">Seat limit — {{ seatLimit() }}</label>
+              <hlm-slider
+                id="seat-limit"
+                class="w-full"
+                [value]="[seatLimit()]"
+                (valueChange)="onSeatLimit($event)"
+                [min]="5"
+                [max]="100"
+                [step]="5"
+                aria-label="Seat limit"
+              />
+            </div>
+          </div>
+          <div hlmCardFooter class="justify-end gap-2">
+            <button hlmBtn variant="ghost">Cancel</button>
+            <button hlmBtn>Save changes</button>
+          </div>
+        </div>
+      </div>
+    </hlm-tabs>
+
+    <!-- FAQ -->
+    <div hlmCard>
+      <div hlmCardHeader>
+        <h3 hlmCardTitle>Frequently asked</h3>
+        <p hlmCardDescription>Common questions about workspaces.</p>
+      </div>
+      <div hlmCardContent>
+        <hlm-accordion type="single">
+          <hlm-accordion-item>
+            <hlm-accordion-trigger>How are seats counted?</hlm-accordion-trigger>
+            <hlm-accordion-content>
+              Every active or invited member occupies one seat. Suspended members do not count toward your limit.
+            </hlm-accordion-content>
+          </hlm-accordion-item>
+          <hlm-accordion-item>
+            <hlm-accordion-trigger>Can I change plans at any time?</hlm-accordion-trigger>
+            <hlm-accordion-content>
+              Yes — upgrades take effect immediately and downgrades apply at the end of the current billing cycle.
+            </hlm-accordion-content>
+          </hlm-accordion-item>
+          <hlm-accordion-item>
+            <hlm-accordion-trigger>What happens when I hit the seat limit?</hlm-accordion-trigger>
+            <hlm-accordion-content>
+              New invitations are paused until you free up a seat or raise the limit in workspace defaults.
+            </hlm-accordion-content>
+          </hlm-accordion-item>
+        </hlm-accordion>
+      </div>
+    </div>
+  </div>
+</div>
