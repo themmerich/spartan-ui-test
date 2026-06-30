@@ -5,10 +5,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { FormInputComponent } from '../../libs/spartan/form-input/form-input.component';
 import { FormNumberComponent } from '../../libs/spartan/form-number/form-number.component';
+import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.component';
 
 @Component({
   selector: 'app-spartan-demo',
-  imports: [ReactiveFormsModule, FormInputComponent, FormNumberComponent, HlmCardImports, JsonPipe],
+  imports: [
+    ReactiveFormsModule,
+    FormInputComponent,
+    FormNumberComponent,
+    FormSelectComponent,
+    HlmCardImports,
+    JsonPipe,
+  ],
   templateUrl: './spartan-demo.html',
 })
 export class SpartanDemo {
@@ -30,6 +38,35 @@ export class SpartanDemo {
     price: new FormControl<number | null>(null, [Validators.required]),
   });
 
+  protected readonly selectForm = new FormGroup({
+    country: new FormControl<string | null>('de'),
+    department: new FormControl<string | null>(null, [Validators.required]),
+  });
+
+  protected readonly countries = [
+    { name: 'Deutschland', value: 'de' },
+    { name: 'Österreich', value: 'at' },
+    { name: 'Schweiz', value: 'ch' },
+    { name: 'Frankreich', value: 'fr' },
+  ];
+
+  protected readonly departmentGroups = [
+    {
+      name: 'Technik',
+      items: [
+        { name: 'Entwicklung', value: 'dev' },
+        { name: 'IT-Betrieb', value: 'ops' },
+      ],
+    },
+    {
+      name: 'Verwaltung',
+      items: [
+        { name: 'Personal', value: 'hr' },
+        { name: 'Finanzen', value: 'fin' },
+      ],
+    },
+  ];
+
   constructor() {
     // Minimal in-memory translations so the demo renders readable labels
     // and validation messages without a translation backend.
@@ -45,6 +82,8 @@ export class SpartanDemo {
         percentage: 'Steuersatz',
         quantity: 'Menge',
         price: 'Preis',
+        country: 'Land',
+        department: 'Abteilung',
       },
       entity: {
         validation: {
@@ -62,6 +101,7 @@ export class SpartanDemo {
           inBetweenNew: 'Wert muss zwischen {{min}} und {{max}} liegen.',
           minlengthNew: 'Mindestens {{minLength}} Stellen erforderlich.',
           maxlengthNew: 'Höchstens {{maxLength}} Stellen erlaubt.',
+          deactivatable: 'Dieser Eintrag kann nicht deaktiviert werden.',
         },
       },
     });

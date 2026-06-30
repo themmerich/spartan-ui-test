@@ -2,7 +2,7 @@
 
 Migrierte Komponenten (von PrimeNG auf [Spartan UI](https://spartan.ng)), die in der echten App die bisherigen `src/libs/components/*`-Wrapper ersetzen.
 
-Stand: aktuell migriert: `form-input`, `form-number`.
+Stand: aktuell migriert: `form-input`, `form-number`, `form-select`.
 
 ---
 
@@ -72,3 +72,4 @@ scannt (bei expliziten content-Globs ergänzen), sonst fehlen die Utility-Klasse
 | ------------- | ---------- | ------------------------------------------------------------------------------------------- |
 | `form-input`  | ✅ migriert | ohne `babs-history-dialog`-Abhängigkeit                                                       |
 | `form-number` | ✅ migriert | natives `type="number"`; ohne `babs-history-dialog`; `minFractionDigits` ohne native Anzeige |
+| `form-select` | ✅ migriert | helm `select` (Overlay via `*hlmSelectPortal`); ohne `babs-history-dialog`; `showFilter`/`showClear` nicht unterstützt |

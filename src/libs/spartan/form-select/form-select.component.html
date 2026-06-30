@@ -1,0 +1,46 @@
+<div class="mt-2.5 w-full">
+  <label hlmLabel [for]="id()" class="mb-1.5">
+    {{ label() | translate }}
+    @if (required()) {
+      <span class="text-destructive">*</span>
+    }
+  </label>
+
+  <hlm-select
+    [formControl]="formControl!"
+    [disabled]="disabled()"
+    [itemToString]="itemToString()"
+    (valueChange)="change($event)"
+  >
+    <hlm-select-trigger [id]="id()" class="w-full">
+      @if (selectedValue() !== null && selectedValue() !== undefined && selectedValue() !== '') {
+        <span data-slot="select-value">{{ itemToString()(selectedValue()) }}</span>
+      } @else {
+        <span data-slot="select-value" class="text-muted-foreground">{{ label() | translate }}</span>
+      }
+    </hlm-select-trigger>
+
+    <hlm-select-content *hlmSelectPortal [style.max-height]="scrollHeight()">
+      @if (group()) {
+        @for (grp of options(); track grp[optionLabel()]) {
+          <hlm-select-group>
+            <span hlmSelectLabel>{{ grp[optionLabel()] }}</span>
+            @for (opt of grp.items; track opt[optionValue()]) {
+              <hlm-select-item [value]="opt[optionValue()]">{{ opt[optionLabel()] }}</hlm-select-item>
+            }
+          </hlm-select-group>
+        }
+      } @else {
+        @for (opt of options(); track opt[optionValue()]) {
+          <hlm-select-item [value]="opt[optionValue()]">{{ opt[optionLabel()] }}</hlm-select-item>
+        }
+      }
+    </hlm-select-content>
+  </hlm-select>
+
+  @if (formControl?.invalid && formControl?.dirty) {
+    <p role="alert" class="text-destructive mt-1.5 text-sm">
+      {{ getErrorMessage() | translate }}
+    </p>
+  }
+</div>

@@ -66,14 +66,38 @@
 
     <div hlmCard>
       <div hlmCardHeader>
+        <h3 hlmCardTitle>form-select</h3>
+        <p hlmCardDescription>
+          Auswahlfeld mit Objekt-Optionen (<code class="text-xs">optionLabel</code>/<code class="text-xs">optionValue</code>),
+          Validierung und optionaler Gruppierung.
+        </p>
+      </div>
+      <div hlmCardContent>
+        <form [formGroup]="selectForm" class="grid gap-2 sm:grid-cols-2">
+          <babs-form-select id="country" label="demo.country" [options]="countries" />
+
+          <babs-form-select
+            id="department"
+            label="demo.department"
+            [options]="departmentGroups"
+            [group]="true"
+            [required]="true"
+          />
+        </form>
+      </div>
+    </div>
+
+    <div hlmCard>
+      <div hlmCardHeader>
         <h3 hlmCardTitle>Live-Werte</h3>
         <p hlmCardDescription>Direkt an die FormGroups gebunden.</p>
       </div>
       <div hlmCardContent class="flex flex-col gap-2">
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ form.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ numberForm.value | json }}</pre>
+        <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ selectForm.value | json }}</pre>
         <span class="text-sm text-muted-foreground">
-          form-input gültig: {{ form.valid ? 'ja' : 'nein' }} · form-number gültig: {{ numberForm.valid ? 'ja' : 'nein' }}
+          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }}
         </span>
       </div>
     </div>
