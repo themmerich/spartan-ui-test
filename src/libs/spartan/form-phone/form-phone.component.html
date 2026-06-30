@@ -1,0 +1,26 @@
+<div class="mt-2.5 w-full">
+  <label hlmLabel [for]="id()" class="mb-1.5">
+    {{ label() | translate }}
+    @if (required()) {
+      <span class="text-destructive">*</span>
+    }
+  </label>
+
+  <input
+    hlmInput
+    type="tel"
+    class="w-full"
+    [formControl]="formControl!"
+    [id]="id()"
+    [autocomplete]="autocomplete()"
+    [attr.readonly]="isReadOnly()"
+    [attr.disabled]="disabled() ? '' : null"
+    [attr.aria-invalid]="formControl?.invalid && formControl?.dirty ? 'true' : null"
+  />
+
+  @if (formControl?.invalid && formControl?.dirty) {
+    <p role="alert" class="text-destructive mt-1.5 text-sm">
+      {{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}
+    </p>
+  }
+</div>
