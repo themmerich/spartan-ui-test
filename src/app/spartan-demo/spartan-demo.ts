@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { FormInputComponent } from '../../libs/spartan/form-input/form-input.component';
 import { FormNumberComponent } from '../../libs/spartan/form-number/form-number.component';
+import { FormPhoneComponent } from '../../libs/spartan/form-phone/form-phone.component';
 import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.component';
 
 @Component({
@@ -13,6 +14,7 @@ import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.
     ReactiveFormsModule,
     FormInputComponent,
     FormNumberComponent,
+    FormPhoneComponent,
     FormSelectComponent,
     HlmCardImports,
     JsonPipe,
@@ -41,6 +43,11 @@ export class SpartanDemo {
   protected readonly selectForm = new FormGroup({
     country: new FormControl<string | null>('de'),
     department: new FormControl<string | null>(null, [Validators.required]),
+  });
+
+  protected readonly phoneForm = new FormGroup({
+    mobile: new FormControl('+49 170 1234567', [Validators.pattern(/^[+0-9 /()-]{6,}$/)]),
+    landline: new FormControl('', [Validators.required]),
   });
 
   protected readonly countries = [
@@ -84,6 +91,8 @@ export class SpartanDemo {
         price: 'Preis',
         country: 'Land',
         department: 'Abteilung',
+        mobile: 'Mobil',
+        landline: 'Festnetz',
       },
       entity: {
         validation: {
@@ -102,6 +111,7 @@ export class SpartanDemo {
           minlengthNew: 'Mindestens {{minLength}} Stellen erforderlich.',
           maxlengthNew: 'Höchstens {{maxLength}} Stellen erlaubt.',
           deactivatable: 'Dieser Eintrag kann nicht deaktiviert werden.',
+          'pattern-phone-new': 'Ungültige Telefonnummer.',
         },
       },
     });
