@@ -1,0 +1,15 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-editor [formControl]="formControl"
+              [id]="id()"
+              [placeholder]="placeholder()"
+              [style]="{ height: height() }"
+              [readonly]="disabled()"
+              [disabled]="disabled()"
+              (blur)="onBlur($event)"
+              (contextmenu)="handleRightClick($event)" />
+    @if (formControl?.invalid && formControl?.dirty) {
+        <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}</p-message>
+    }
+</div>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />

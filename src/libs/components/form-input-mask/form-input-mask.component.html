@@ -1,0 +1,37 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-inputgroup>
+        <p-floatlabel variant="on" style="width: 100%">
+            <p-inputmask
+                [ariaLabelledBy]="id()"
+                [formControl]="formControl"
+                [mask]="mask()"
+                [id]="id()"
+                [autocomplete]="autocomplete()"
+                [variant]="variant()"
+                [disabled]="disabled()"
+                [placeholder]="placeholder()"
+                [attr.readonly]="isReadOnly()"
+                [attr.style]="'width: 100%'"
+                (blur)="onBlur($event)"
+                (input)="handleInput($event)"
+                (contextmenu)="handleRightClick($event)" />
+            <label [for]="id()">
+                {{ label() | translate }}
+                @if (required()) {
+                    <span>*</span>
+                }
+            </label>
+        </p-floatlabel>
+        @if (unit()) {
+            <p-inputgroup-addon>{{ unit() }}</p-inputgroup-addon>
+        }
+        @if (link()) {
+            <p-inputgroup-addon class="single-button"><p-button icon="pi pi-external-link" severity="secondary" variant="text" [routerLink]="link()" /></p-inputgroup-addon>
+        }
+    </p-inputgroup>
+    @if (formControl?.invalid && formControl?.dirty) {
+        <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}</p-message>
+    }
+</div>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />

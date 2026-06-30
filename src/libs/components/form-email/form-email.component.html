@@ -1,0 +1,22 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-floatlabel variant="on" style="width: 100%">
+        <input pInputText
+               [formControl]="formControl"
+               [id]="id()" style="width: 100%"
+               [autocomplete]="autocomplete()"
+               [disabled]="disabled()"
+               [attr.readonly]="isReadOnly()"
+               (contextmenu)="handleRightClick($event)" />
+        <label [for]="id()">
+            {{ label() | translate }}
+            @if (required()) {
+                <span>*</span>
+            }
+        </label>
+    </p-floatlabel>
+    @if (formControl.invalid && formControl.dirty) {
+        <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}</p-message>
+    }
+</div>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />
