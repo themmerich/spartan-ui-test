@@ -1,0 +1,23 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-inputgroup>
+        <p-floatlabel variant="on" style="width: 100%">
+            <p-autoComplete
+                [formControl]="formControl"
+                [suggestions]="vorschlaege()"
+                (completeMethod)="onSuche($event)"
+                (onSelect)="onAuswahl($event)"
+                field="suggestion"
+                optionLabel="suggestion"
+                [minQueryLength]="3"
+                [delay]="300"
+                placeholder="Adresse suchen..."
+                [required]="true"
+                [disabled]="isDisabled()"
+                emptyMessage="Keine Ergebnisse gefunden"
+                (contextmenu)="handleRightClick($event)" />
+            <label [attr.for]="id()">{{ 'babsappApp.adresse.strasse' | translate }} <span>*</span></label>
+        </p-floatlabel>
+    </p-inputgroup>
+</div>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />

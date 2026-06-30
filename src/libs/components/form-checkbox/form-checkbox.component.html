@@ -1,0 +1,19 @@
+<div style="margin-top: 10px; width: 100%">
+        <p-checkbox [formControl]="formControl"
+                    [binary]="binary()"
+                    [id]="id()"
+                    [disabled]="disabled()"
+                    [required]="required()"
+                    (contextmenu)="handleRightClick($event)" />
+
+        <label [for]="id()">
+            {{ label() | translate }}
+            @if (required()) {
+                <span>*</span>
+            }
+        </label>
+
+    @if (formControl?.invalid && formControl?.dirty) {
+        <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() | translate }}</p-message>
+    }
+</div>

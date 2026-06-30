@@ -1,0 +1,71 @@
+<div [hidden]="!((field?.dirty || savedId) && field?.invalid)" [id]="'field_errors_' + field?.name" tabindex="0" [class]="className">
+    @if (field?.errors?.required && !customRequired) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.required"> This field is required. </small>
+    }
+    @if (field?.errors?.required && customRequired) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.{{ customRequired }}"> This field is required. </small>
+    }
+    @if (field?.errors?.min) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.min" [translateValues]="customErrorValue">
+            This field is required to be at least {{ field?.errors?.min }}.
+        </small>
+    }
+
+    @if (field?.errors?.max) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.max" [translateValues]="customErrorValue">
+            This field is required to be at least {{ field?.errors?.max }}.
+        </small>
+    }
+
+    @if (field?.errors?.minlength && !exactLength) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.minlength" [translateValues]="{ min: field?.errors?.minlength.requiredLength }">
+            This field is required to be at least {{ field?.errors?.minlength.requiredLength }} characters.
+        </small>
+    }
+    @if (field?.errors?.maxlength && !exactLength) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.maxlength" [translateValues]="{ max: field?.errors?.maxlength.requiredLength }">
+            This field cannot be longer than {{ field?.errors?.maxlength.requiredLength }} characters.
+        </small>
+    }
+    @if ((field?.errors?.minlength || field?.errors?.maxlength) && exactLength) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.length" [translateValues]="{ length: exactLength }">
+            This field is required to be exactly {{ exactLength }} characters.
+        </small>
+    }
+    @if (field?.errors?.iban || field?.errors?.GermanIBAN) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.germanIBAN"> Keine gültige IBAN </small>
+    }
+    @if (field?.errors?.steuerIdNr || field?.errors?.germanStIdNr) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.germanStIdNr"> Keine gültige Steueridentifikationsnummer </small>
+    }
+    @if ((field?.errors?.pattern || field?.errors?.Pattern) && patternKey) {
+        <small class="form-text text-danger" [babsTranslate]="'entity.validation.' + patternKey" [translateValues]="{ param: patternParameter }">
+            This field should follow pattern for {{ patternKey }}.
+        </small>
+    }
+    @if (field?.errors?.stringLatinTypA) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.stringLatinTypA"> Diese Feld enthält ungültige Zeichen </small>
+    }
+    @if (field?.errors?.stringLatinTypB) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.stringLatinTypB"> Diese Feld enthält ungültige Zeichen </small>
+    }
+    @if (field?.errors?.stringLatinTypC) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.stringLatinTypC"> Diese Feld enthält ungültige Zeichen </small>
+    }
+    @if (field?.errors?.stringLatinTypD) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.stringLatinTypD"> Diese Feld enthält ungültige Zeichen </small>
+    }
+    @if (field?.errors?.stringLatinTypE) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.stringLatinTypE"> Diese Feld enthält ungültige Zeichen </small>
+    }
+    @if (field?.errors?.isInteger) {
+        <small class="form-text text-danger" babsTranslate="entity.validation.isInteger"> Das Feld muss eine ganze Zahl sein. </small>
+    }
+    @for (customError of customErrors; track customError) {
+        @if (field?.errors && field?.errors[customError]) {
+            <small class="form-text text-danger" [translateValues]="customErrorValue" babsTranslate="entity.validation.{{ customError }}">
+                Validierungsfehler {{ customError }}
+            </small>
+        }
+    }
+</div>

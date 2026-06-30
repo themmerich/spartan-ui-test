@@ -1,0 +1,40 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-floatlabel variant="on" style="width: 100%">
+        <p-datepicker
+            [attr.id]="id()"
+            [attr.name]="id()"
+            [dataType]="dataType()"
+            [firstDayOfWeek]="1"
+            [formControl]="formControl"
+            [minDate]="minDate()"
+            [maxDate]="maxDate()"
+            [required]="required()"
+            [showClear]="showClear()"
+            [showIcon]="showIcon()"
+            [showTime]="showTime()"
+            [showWeek]="showWeek()"
+            [disabled]="disabled()"
+            (onSelect)="selectDate($event)"
+            (onBlur)="blurDate()"
+            (contextmenu)="handleRightClick($event)"
+            [appendTo]="appendTo()"
+            [baseZIndex]="baseZIndex()"
+            style="width: 100%"
+            panelStyleClass="blubb"
+            dateFormat="dd.mm.yy"
+            hourFormat="24"
+            icon="fa fa-fw fa-calendar"
+            tabindex="0" />
+        <label [attr.for]="id()">
+            {{ label() | translate }}
+            @if (required()) {
+                <span>*</span>
+            }
+        </label>
+    </p-floatlabel>
+        @if (formControl?.invalid && formControl?.dirty) {
+            <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() }}</p-message>
+        }
+</div>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />

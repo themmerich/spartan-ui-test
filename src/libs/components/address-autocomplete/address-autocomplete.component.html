@@ -1,0 +1,39 @@
+<div [formGroup]="formGroup" class="form-group row mb-3">
+    <span tabindex="{{ tabindex }}" [attr.babsHelp]="labelHelp" babsHelp="{{ labelHelp }}">
+        <label class="col-form-label" babsTranslate="{{ label }}" for="field_{{ id }}">{{ labelStatic }}</label>
+    </span>
+    <div class="col-sm">
+        <div class="input-group">
+            <input
+                id="{{ id }}"
+                name="{{ name }}"
+                formControlName="{{ name }}"
+                babsExtFormControlName
+                placeholder="{{ placeholder }}"
+                type="{{ type }}"
+                [mask]="mask"
+                autocomplete="{{ autocomplete }}"
+                class="form-control"
+                maxlength="{{ maxLength }}"
+                minlength="{{ minLength }}" />
+            <div class="input-group-append">
+                <button
+                    type="button"
+                    babsAutofocus
+                    class="btn btn-primary"
+                    babsHelp="dolmetscher.field.sucheOeffnen"
+                    (click)="openAddressSearch()"
+                    [disabled]="control.disabled">
+                    <i class="fa fa-fw fa-search" aria-hidden="true"></i>
+                    <span class="sr-only">{{ 'global.terms.addressSearch' | babsTranslate }}</span>
+                </button>
+            </div>
+        </div>
+        <babs-field-error
+            [field]="control"
+            [savedId]="savedId"
+            [customErrors]="customErrors"
+            patternKey="{{ patternKey }}"
+            exactLength="{{ exactLength }}"></babs-field-error>
+    </div>
+</div>

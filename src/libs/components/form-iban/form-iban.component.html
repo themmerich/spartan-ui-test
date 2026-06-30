@@ -1,0 +1,109 @@
+<!-- iban original -->
+@if (!showIbanZurFreigabe()) {
+    <div class="row mb-2">
+        <babs-form-input-mask [id]="currentId() ? 'iban': 'ibanZurFreigabe'"
+                              [mask]="ibanInputMask"
+                              [disabled]="isLesendeRolle()"
+                              [label]="'babsappApp.dolmetscher.iban'"
+                              [formGruppe]="formGruppe()"
+                              [required]="required()"
+                              (input)="onInputChange()"
+                              [uppercase]="true" />
+        @if ((dolmetscherBuero()?.id || personenProfil()?.id) && isIbanEdited()) {
+            <small class="form-text text-danger" babsTranslate="entity.validation.manuallyEdited">Dieser Wert wurde erneut editiert.</small>
+        }
+    </div>
+    <!-- zwischenspeichern -->
+    @if (isIbanEdited() && currentId()) {
+        <div class="row mb-3">
+            <div class="col-12">
+                <p-button
+                    [disabled]="!ibanControl()?.valid"
+                    [label]="'entity.action.tempSave' | translate"
+                    (click)="saveIbanZurFreigabe()"
+                    class="margin-right-5"
+                    icon="pi pi-check"
+                    severity="primary"
+                    tabindex="0"
+                    type="button">
+                    <span class="screen-reader-only">{{ 'entity.action.tempSave' | translate }}</span>
+                </p-button>
+                <p-button
+                    [disabled]="!ibanControl()?.valid"
+                    [label]="'entity.action.cancel' | translate"
+                    (click)="revertIban()"
+                    icon="pi pi-times"
+                    severity="secondary"
+                    tabindex="0"
+                    type="button">
+                    <span class="screen-reader-only">{{ 'entity.action.cancel' | translate }}</span>
+                </p-button>
+            </div>
+    </div>
+    }
+}
+
+<!-- iban zur freigabe -->
+@if (showIbanZurFreigabe()) {
+    <div class="row mb-2">
+        <div class="col-12">
+            <babs-form-input-mask [id]="'ibanZurFreigabe'"
+                                  [mask]="ibanInputMask"
+                                  [disabled]="ibanZurFreigabeDisabled() || isLesendeRolle()"
+                                  [label]="'babsappApp.dolmetscher.iban'"
+                                  [formGruppe]="formGruppe()"
+                                  [required]="required()"
+                                  [uppercase]="true"/>
+            <small class="form-text text-danger" babsTranslate="entity.validation.manuallyEdited"> Dieser Wert wurde erneut editiert. </small>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            @if (showIbanZurFreigabeEditButtons()) {
+                <p-button
+                    [label]="'entity.action.tempSave' | translate"
+                    [disabled]="!ibanZurFreigabeControl()?.valid"
+                    (click)="updateIbanZurFreigabe()"
+                    class="margin-right-5"
+                    icon="pi pi-check"
+                    type="button"
+                    severity="primary"
+                    tabindex="0">
+                    <span class="screen-reader-only">{{ 'entity.action.tempSave' | translate }}</span>
+                </p-button>
+
+                <p-button
+                    [label]="'entity.action.cancel' | translate"
+                    (click)="revertIbanZurFreigabe()"
+                    icon="pi pi-times"
+                    type="button"
+                    severity="secondary"
+                    tabindex="0">
+                    <span class="screen-reader-only">{{ 'entity.action.cancel' | translate }}</span>
+                </p-button>
+            } @else {
+                <p-button
+                    [label]="'entity.action.edit' | translate"
+                    (click)="editIbanZurFreigabe()"
+                    class="margin-right-5"
+                    icon="pi pi-check"
+                    type="button"
+                    severity="primary"
+                    tabindex="0">
+                    <span class="screen-reader-only">{{ 'entity.action.edit' | translate }}</span>
+                </p-button>
+
+                <p-button
+                    [disabled]="disableFreigabe()"
+                    [label]="'entity.action.freigeben' | translate"
+                    (click)="ibanFreigeben()"
+                    icon="pi pi-times"
+                    type="button"
+                    severity="primary"
+                    tabindex="0">
+                    <span class="screen-reader-only">{{ 'entity.action.freigeben' | translate }}</span>
+                </p-button>
+            }
+        </div>
+    </div>
+}

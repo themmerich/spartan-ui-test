@@ -1,0 +1,23 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-inputgroup>
+        <p-floatlabel variant="on" style="width: 100%">
+            <input pInputText [value]="value()" (input)="value.set($event.target.value)" [id]="id()" style="width: 100%" [autocomplete]="autocomplete()" [variant]="variant()" [disabled]="disabled()" [attr.readonly]="isReadOnly()" (blur)="onBlur($event)"/>
+            <label [for]="id()">
+                {{ label() | translate }}
+                @if (required()) {
+                    <span>*</span>
+                }
+            </label>
+        </p-floatlabel>
+        @if (unit()) {
+            <p-inputgroup-addon>{{ unit() }}</p-inputgroup-addon>
+        }
+        @if (link()) {
+            <p-inputgroup-addon class="single-button"><p-button icon="pi pi-external-link" severity="secondary" variant="text" [routerLink]="link()" /></p-inputgroup-addon>
+        }
+    </p-inputgroup>
+
+    @if (formObject().invalid() && formObject().dirty()) {
+        <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}</p-message>
+    }
+</div>

@@ -1,0 +1,13 @@
+// needed to get rid of these doted red lines for required fields
+input.ng-invalid:not(form):not(.no-validate):not(input[type='checkbox']) {
+    border-left: 1px solid #cbd5e1 !important;
+}
+
+// needed to get rid of the black border on focus
+:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+.single-button {
+    max-height: 42px;
+}

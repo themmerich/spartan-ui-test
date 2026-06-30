@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <h2 class="modal-title">{{ modalTitle | babsTranslate }}</h2>
+    <button type="button" class="btn-close" aria-label="Dialog Schliessen" (click)="activeModal.dismiss()">
+        <span aria-hidden="true"></span>
+    </button>
+</div>
+<div class="modal-body">
+    @if (errMsg) {
+        <div class="row">
+            <div class="col-md-12">
+                <small class="text-danger" aria-live="assertive">
+                    {{ errMsg | babsTranslate: errParams }}
+                </small>
+            </div>
+        </div>
+    }
+    <span>
+        <div class="form-group row mb-3">
+            <span tabindex="0" style="flex-grow: 0.3" babsHelp="dolmetscher.field.suche">
+                <label class="col-form-label" babsTranslate="babsappApp.dolmetscher.suche" for="address_autocomplete">Suche</label>
+            </span>
+            <div class="col-sm">
+                <input
+                    #autocomplete
+                    id="address_autocomplete"
+                    type="text"
+                    class="form-control"
+                    [inputFormatter]="formatInput"
+                    [resultFormatter]="formatResult"
+                    (selectItem)="onOptionSelected($event)"
+                    [class.is-invalid]="searchFailed"
+                    [ngbTypeahead]="search" />
+                @if (searchFailed) {
+                    <div class="invalid-feedback">Vorschläge konnten nicht geladen werden.</div>
+                }
+            </div>
+        </div>
+    </span>
+</div>
+<div class="modal-footer">
+    <button id="cancelButton" type="button" [ngClass]="'btn-sm'" class="btn btn-default" data-dismiss="modal" (click)="activeModal.dismiss()">
+        <span class="fa fa-ban"></span>&nbsp;<span babsTranslate="entity.action.cancel">Cancel</span>
+    </button>
+    <button
+        id="okButton"
+        type="submit"
+        [disabled]="okButtonDisabled"
+        (click)="activeModal.close({ street: street, number: number, zip: zip, city: city })"
+        [ngClass]="'btn-sm'"
+        class="btn btn-primary">
+        <span class="fa {{ okButtonIcon }}"></span>&nbsp;<span [babsTranslate]="okButtonName">Accept</span>
+    </button>
+</div>

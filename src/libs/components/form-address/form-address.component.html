@@ -1,0 +1,42 @@
+<div class="row">
+    @if (isAutofill() && !isDisabled()) {
+        <ng-container [formGroup]="formGruppe()">
+            <babs-form-address-autocomplete id="strasse" [formGruppe]="formGruppe()" [required]="true" [attr.class]="'col-8'"/>
+        </ng-container>
+    } @else {
+        <babs-form-input id="strasse" label="babsappApp.adresse.strasse" [formGruppe]="formGruppe()" [maxLength]="50" [required]="true" [disabled]="isDisabled()" [attr.class]="'col-8'"/>
+    }
+    <babs-form-input id="hausnummer" label="babsappApp.adresse.hausnummer" [formGruppe]="formGruppe()" [maxLength]="10" [required]="true" [disabled]="isDisabled()" [attr.class]="'col-4'"/>
+</div>
+<div class="row">
+    <babs-form-input id="adresszusatz" label="babsappApp.adresse.adresszusatz" [formGruppe]="formGruppe()" [maxLength]="50" [disabled]="isDisabled()" [attr.class]="'col-12'"/>
+</div>
+<div class="row">
+    <babs-form-input id="plz" label="babsappApp.adresse.plz" [minLength]="5" [formGruppe]="formGruppe()" [maxLength]="5" [required]="true" [disabled]="isDisabled() || isDisabledPlz()" [attr.class]="'col-3'"/>
+    <babs-form-input id="ort" label="babsappApp.adresse.ort" [minLength]="2" [formGruppe]="formGruppe()" [maxLength]="50" [required]="true" [disabled]="isDisabled()" [attr.class]="'col-9'"/>
+</div>
+
+@if (showPostfach()) {
+    <div class="row">
+        <babs-form-input id="postfach" label="babsappApp.adresse.postfach" [formGruppe]="formGruppe()" [attr.class]="'col-12'" [maxLength]="10" />
+    </div>
+}
+
+@if (showBundesland()) {
+    <div class="row">
+        <babs-form-input id="bundesland" label="babsappApp.adresse.bundesland" [formGruppe]="formGruppe()" [disabled]="isDisabledBundesland()" [attr.class]="'col-12'" />
+    </div>
+}
+
+@if (showGEOFelder()) {
+    <div class="row">
+        <babs-form-number id="breitengrad" label="babsappApp.adresse.breitengrad" suffix="°" [formGruppe]="formGruppe()" [minFractionDigits]="6" [disabled]="isDisabledGeo()" [attr.class]="'col-6'"/>
+        <babs-form-number id="laengengrad" label="babsappApp.adresse.laengengrad" suffix="°" [formGruppe]="formGruppe()" [minFractionDigits]="6" [disabled]="isDisabledGeo()" [attr.class]="'col-6'"/>
+    </div>
+    @if (showActivateGeoBundeslandButtons()) {
+    <div class="row mt-1">
+        <p-button (click)="activateGeoBundesland()" label="Bearbeiten"></p-button>
+        <p-button (click)="deactivateGeoBundesland()" label="Abbrechen"></p-button>
+    </div>
+    }
+}
