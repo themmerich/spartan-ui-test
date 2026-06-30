@@ -1,0 +1,53 @@
+<div class="min-h-dvh bg-background text-foreground">
+  <div class="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-8">
+    <header class="flex flex-col gap-1">
+      <h1 class="text-xl font-semibold tracking-tight">Spartan Wrapper — Demo</h1>
+      <p class="text-sm text-muted-foreground">
+        Migrierte Komponenten aus <code class="text-xs">src/libs/spartan</code>. Aktuell: <code class="text-xs">form-input</code>.
+      </p>
+    </header>
+
+    <div hlmCard>
+      <div hlmCardHeader>
+        <h3 hlmCardTitle>form-input</h3>
+        <p hlmCardDescription>
+          Reaktives Formular-Eingabefeld mit Label, Validierung, Einheit, Link, Uppercase und Disabled-Zustand.
+        </p>
+      </div>
+      <div hlmCardContent>
+        <form [formGroup]="form" class="grid gap-2 sm:grid-cols-2">
+          <babs-form-input id="firstName" label="demo.firstName" placeholder="Vorname eingeben" />
+
+          <babs-form-input
+            id="username"
+            label="demo.username"
+            placeholder="min. 3 Zeichen"
+            [required]="true"
+            [minLength]="3"
+          />
+
+          <babs-form-input id="weight" label="demo.weight" unit="kg" />
+
+          <babs-form-input id="homepage" label="demo.homepage" link="/dashboard" />
+
+          <babs-form-input id="code" label="demo.code" placeholder="z. B. de" [uppercase]="true" />
+
+          <babs-form-input id="readonlyField" label="demo.readonly" [disabled]="true" />
+        </form>
+      </div>
+    </div>
+
+    <div hlmCard>
+      <div hlmCardHeader>
+        <h3 hlmCardTitle>Live-Werte</h3>
+        <p hlmCardDescription>Direkt an das FormGroup gebunden.</p>
+      </div>
+      <div hlmCardContent class="flex flex-col gap-2">
+        <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ form.value | json }}</pre>
+        <span class="text-sm text-muted-foreground">
+          Formular gültig: {{ form.valid ? 'ja' : 'nein' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
