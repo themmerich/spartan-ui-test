@@ -1,0 +1,32 @@
+<div class="mt-2.5 flex w-full flex-col">
+  <label hlmLabel [for]="id()" class="mb-1.5">
+    {{ label() | translate }}
+    @if (required()) {
+      <span class="text-destructive">*</span>
+    }
+  </label>
+
+  <hlm-date-picker
+    [formControl]="formControl!"
+    [min]="minDate() ?? undefined"
+    [max]="maxDate() ?? undefined"
+    [formatDate]="formatDate"
+    [autoCloseOnSelect]="true"
+    [disabled]="disabled()"
+    (dateChange)="selectDate($event)"
+  >
+    <hlm-date-picker-trigger
+      [buttonId]="id()"
+      [showTrigger]="showIcon()"
+      class="w-full"
+    >
+      TT.MM.JJJJ
+    </hlm-date-picker-trigger>
+  </hlm-date-picker>
+
+  @if (formControl?.invalid && formControl?.dirty) {
+    <p role="alert" class="text-destructive mt-1.5 text-sm">
+      {{ getErrorMessage() }}
+    </p>
+  }
+</div>
