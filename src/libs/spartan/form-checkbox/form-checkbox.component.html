@@ -1,0 +1,23 @@
+<div class="mt-2.5 flex flex-col gap-1.5">
+  <div class="flex items-center gap-2.5">
+    <hlm-checkbox
+      [formControl]="formControl!"
+      [inputId]="id()"
+      [disabled]="disabled()"
+      [required]="required()"
+      [attr.aria-invalid]="formControl?.invalid && formControl?.dirty ? 'true' : null"
+    />
+    <label hlmLabel [for]="id()">
+      {{ label() | translate }}
+      @if (required()) {
+        <span class="text-destructive">*</span>
+      }
+    </label>
+  </div>
+
+  @if (formControl?.invalid && formControl?.dirty) {
+    <p role="alert" class="text-destructive text-sm">
+      {{ getErrorMessage() | translate }}
+    </p>
+  }
+</div>

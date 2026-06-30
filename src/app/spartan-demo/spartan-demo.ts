@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { HlmCardImports } from '@spartan-ng/helm/card';
+import { FormCheckboxComponent } from '../../libs/spartan/form-checkbox/form-checkbox.component';
 import { FormInputComponent } from '../../libs/spartan/form-input/form-input.component';
 import { FormNumberComponent } from '../../libs/spartan/form-number/form-number.component';
 import { FormPhoneComponent } from '../../libs/spartan/form-phone/form-phone.component';
@@ -12,6 +13,7 @@ import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.
   selector: 'app-spartan-demo',
   imports: [
     ReactiveFormsModule,
+    FormCheckboxComponent,
     FormInputComponent,
     FormNumberComponent,
     FormPhoneComponent,
@@ -48,6 +50,12 @@ export class SpartanDemo {
   protected readonly phoneForm = new FormGroup({
     mobile: new FormControl('+49 170 1234567', [Validators.pattern(/^[+0-9 /()-]{6,}$/)]),
     landline: new FormControl('', [Validators.required]),
+  });
+
+  protected readonly checkboxForm = new FormGroup({
+    newsletter: new FormControl(true),
+    terms: new FormControl(false, [Validators.requiredTrue]),
+    notifications: new FormControl({ value: false, disabled: true }),
   });
 
   protected readonly countries = [
@@ -93,6 +101,9 @@ export class SpartanDemo {
         department: 'Abteilung',
         mobile: 'Mobil',
         landline: 'Festnetz',
+        newsletter: 'Newsletter abonnieren',
+        terms: 'AGB akzeptieren',
+        notifications: 'Benachrichtigungen aktivieren',
       },
       entity: {
         validation: {
