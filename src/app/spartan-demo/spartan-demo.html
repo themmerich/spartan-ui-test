@@ -39,13 +39,41 @@
 
     <div hlmCard>
       <div hlmCardHeader>
+        <h3 hlmCardTitle>form-number</h3>
+        <p hlmCardDescription>
+          Numerisches Eingabefeld (native <code class="text-xs">type="number"</code>) mit Label, Validierung, Einheit und Suffix.
+        </p>
+      </div>
+      <div hlmCardContent>
+        <form [formGroup]="numberForm" class="grid gap-2 sm:grid-cols-2">
+          <babs-form-number id="amount" label="demo.amount" unit="EUR" [disabled]="false" />
+
+          <babs-form-number id="percentage" label="demo.percentage" suffix="%" [maxFractionDigits]="0" [disabled]="false" />
+
+          <babs-form-number
+            id="quantity"
+            label="demo.quantity"
+            [maxFractionDigits]="0"
+            [min]="1"
+            [max]="100"
+            [disabled]="false"
+          />
+
+          <babs-form-number id="price" label="demo.price" unit="EUR" [required]="true" [disabled]="false" />
+        </form>
+      </div>
+    </div>
+
+    <div hlmCard>
+      <div hlmCardHeader>
         <h3 hlmCardTitle>Live-Werte</h3>
-        <p hlmCardDescription>Direkt an das FormGroup gebunden.</p>
+        <p hlmCardDescription>Direkt an die FormGroups gebunden.</p>
       </div>
       <div hlmCardContent class="flex flex-col gap-2">
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ form.value | json }}</pre>
+        <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ numberForm.value | json }}</pre>
         <span class="text-sm text-muted-foreground">
-          Formular gültig: {{ form.valid ? 'ja' : 'nein' }}
+          form-input gültig: {{ form.valid ? 'ja' : 'nein' }} · form-number gültig: {{ numberForm.valid ? 'ja' : 'nein' }}
         </span>
       </div>
     </div>
