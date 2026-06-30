@@ -1,0 +1,11 @@
+.history-table {
+    overflow-x: auto
+}
+.history-table ::ng-deep .p-datatable-table {
+    font-size: 0.875rem;
+}
+
+.history-table ::ng-deep th,
+.history-table ::ng-deep td {
+    padding: .45rem .75rem;
+}

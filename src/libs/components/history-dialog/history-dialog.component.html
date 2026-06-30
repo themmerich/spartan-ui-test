@@ -1,0 +1,31 @@
+<p-dialog
+    header="{{ 'auditHistory.title' | translate }}"
+    [modal]="true"
+    [style]="{ width: '60rem', minWidth: '800px', height: '40rem', minHeight: '700px' }"
+    [visible]="visible()"
+    (visibleChange)="visible.set($event)"
+    (onHide)="cancel()"
+    [contentStyle]="{ overflow: 'visible' }"
+    [focusTrap]="true">
+    <div class="row">
+        @if (history?.error()) {
+            @if (isNotFound()) {
+                <p>Für dieses Feld ist keine Historie vorhanden.</p>
+            } @else {
+                <p>Fehler beim laden der Historie: {{ history?.error().message }}</p>
+            }
+        } @else {
+            <babs-table-clientside
+                [data]="history?.value()"
+                [columns]="columns"
+                [emptyMsg]="'auditHistory.messages.noChanges'"
+                [exportFilename]="'exportHistoryDialog'"
+                [stateKey]="'historyDialog'"
+            />
+        }
+    </div>
+
+    <div class="button-row">
+        <p-button (click)="cancel()" label="{{ 'entity.action.cancel' | translate }}" severity="secondary" tabindex="0" />
+    </div>
+</p-dialog>

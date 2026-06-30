@@ -1,0 +1,322 @@
+@if (totalRecords()) {
+    <div>Anzahl: {{ totalRecords() }}</div>
+}
+<p-table
+    #dt1
+    stripedRows
+    showGridlines
+    dataKey="id"
+    sortMode="multiple"
+    selectionMode="single"
+    [(selection)]="selectedRow"
+    [size]="'small'"
+    [value]="data()"
+    [lazy]="true"
+    [rows]="25"
+    [totalRecords]="totalRecords()"
+    [paginator]="true"
+    [rowsPerPageOptions]="[25, 50, 100]"
+    [columns]="internalSelectedColumns()"
+    [resizableColumns]="true"
+    stateStorage="local"
+    [stateKey]="stateKey()"
+    [globalFilterFields]="globalFilterColumns()"
+    (onLazyLoad)="onLazyLoad($event)">
+    <ng-template #caption>
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <div class="flex-shrink-0">
+                <p-multiSelect
+                    id="columnToggler"
+                    display="chip"
+                    [options]="internalColumns()"
+                    [(ngModel)]="internalSelectedColumns"
+                    (ngModelChange)="onColumnsChange($event)"
+                    optionLabel="header"
+                    scrollHeight="400px"
+                    selectedItemsLabel="{0} Spalten ausgewählt"
+                    placeholder="Bitte Spalten auswählen"
+                    ariaLabel="Spaltenauswahl" />
+            </div>
+
+            <div class="flex-shrink-1 text-center">
+                <p-iconfield iconPosition="left" aria-label="Suchfeld">
+                    <p-inputicon aria-label="Such-Icon">
+                        <i class="pi pi-search"></i>
+                    </p-inputicon>
+                    <input
+                        id="globalSearch"
+                        pInputText
+                        style="width: 400px"
+                        type="text"
+                        aria-label="Globale Suche"
+                        [(ngModel)]="globalFilterValue"
+                        (input)="dt1.filterGlobal(globalFilterValue(), 'contains')"
+                        placeholder="Suche" />
+                </p-iconfield>
+            </div>
+
+            <div class="flex-shrink-0 d-flex gap-2">
+                @if (showExport()) {
+                    <button
+                        aria-label="Exportieren"
+                        type="button"
+                        pButton
+                        label="Exportieren"
+                        icon="pi pi-external-link"
+                        (click)="onExport(dt1.filters, dt1.multiSortMeta)"
+                        class="btn-text"
+                        id="export"></button>
+                }
+                @if (!isReadOnly() && showAdd()) {
+                    <button
+                        aria-label="Hinzufügen"
+                        type="button"
+                        pButton
+                        *babsHasAnyAuthority="'ROLE_ZENTRALEMA'"
+                        label="Hinzufügen"
+                        icon="pi pi-plus"
+                        (click)="onAdd($event)"
+                        class="btn-text"
+                        id="add"></button>
+                }
+                <button
+                    aria-label="Löschen"
+                    type="button"
+                    pButton
+                    label="Löschen"
+                    icon="pi pi-filter-slash"
+                    (click)="clearFilters(dt1)"
+                    class="btn-text"
+                    id="clear"></button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #header let-columns>
+        <tr>
+            @for (col of columns; track col.field) {
+                @if (col.sort) {
+                    <th pResizableColumn pSortableColumn="{{ col.field }}" id="header_{{ col.field }}">
+                        <div>
+                            {{ col.header | translate }}
+                            <p-sortIcon field="{{ col.field }}" />
+                            @switch (col.type) {
+                                @case ('boolean') {
+                                    <p-columnFilter type="boolean" field="{{ col.field }}" display="menu" />
+                                }
+                                @case ('number') {
+                                    <p-columnFilter type="numeric" field="{{ col.field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+                                }
+                                @case ('percentage') {
+                                    <p-columnFilter type="numeric" field="{{ col.field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+                                }
+                                @case ('date') {
+                                    <p-columnFilter type="date" field="{{ col.field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+                                }
+                                @case ('date_time') {
+                                    <p-columnFilter type="date" field="{{ col.field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+                                }
+                                @case ('wiedervorlagen_grund') {
+                                    <babs-list-columnfilter-server field="{{ col.field }}" [options]="wiedervorlageGrund" />
+                                }
+                                @case ('wiedervorlagen_modus') {
+                                    <babs-list-columnfilter-server field="{{ col.field }}" [options]="wiedervorlageModus" />
+                                }
+                                @case ('wiedervorlagen_stand') {
+                                    <babs-list-columnfilter-server field="{{ col.field }}" [options]="wiedervorlageStand" />
+                                }
+                                @case ('profiltyp') {
+                                    <babs-list-columnfilter-server field="{{ col.field }}" [options]="profilTypen" />
+                                }
+                                @case ('status') {
+                                    <babs-list-columnfilter-server field="{{ col.field }}" [options]="statusList" />
+                                }
+                                @case ('sprachen') {
+                                    <p-columnFilter
+                                        field="{{ col.field }}"
+                                        display="menu"
+                                        matchMode="in"
+                                        [showMatchModes]="false"
+                                        [showOperator]="false"
+                                        [showAddButton]="false">
+                                        <ng-template #filter let-value let-filter="filterCallback">
+                                            <p-multiSelect [ngModel]="value" (ngModelChange)="filter($event)" [options]="sprachen"
+                                                           optionLabel="code" optionValue="code" [virtualScroll]="true" [virtualScrollItemSize]="43"
+                                                           scrollHeight="450px" appendTo="body" styleClass="w-full" placeholder="Alle">
+                                                <ng-template let-option #item>
+                                                    <div><b>{{ option.nameShort }} ({{ option.code }}): </b>{{ option.name }}</div>
+                                                </ng-template>
+                                            </p-multiSelect>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                }
+                                @default {
+                                    <p-columnFilter
+                                        type="text"
+                                        field="{{ col.field }}"
+                                        display="menu"
+                                        [matchMode]="'contains'"
+                                        [showOperator]="false"
+                                        [showAddButton]="false" />
+                                }
+                            }
+                        </div>
+                    </th>
+                } @else {
+                    <th>{{ col.header | translate }}</th>
+                }
+            }
+            @if (showView() || showEdit() || showDelete() || showHistory()) {
+                <th>Aktion</th>
+            }
+        </tr>
+    </ng-template>
+
+    <ng-template #body let-rowData let-columns="columns" let-index="rowIndex">
+        <tr [pSelectableRow]="rowData">
+            @for (col of columns; track col.field) {
+                @if (col.type === 'status') {
+                    <td><babs-tag-value [value]="'babsappApp.DolmetscherStatus.' + rowData[col.field] | translate" [severity]="getSeverity(rowData[col.field])" /></td>
+                } @else if (col.type === 'wiedervorlagen_grund') {
+                    <td>{{ 'babsappApp.vorlagen.grund.' + rowData[col.field] | translate }}</td>
+                } @else if (col.type === 'wiedervorlagen_modus') {
+                    <td>{{ 'babsappApp.wiedervorlage.wvView.modus.' + rowData[col.field] | translate }}</td>
+                } @else if (col.type === 'wiedervorlagen_stand') {
+                    <td>{{ 'babsappApp.wiedervorlage.wvView.stand.' + rowData[col.field] | translate }}</td>
+                } @else if (col.type === 'profiltyp') {
+                    <!--td>{{ 'babsappApp.ProfilTyp.' + getFieldValue(rowData, col.field) | babsTranslate }}</td-->
+                    @if (getFieldValue(rowData, col.field) === 'BI') {
+                        <td><i class="pi pi-building"></i></td>
+                    } @else if (getFieldValue(rowData, col.field) === 'ED') {
+                        <td><i class="pi pi-user"></i></td>
+                    } @else if (getFieldValue(rowData, col.field) === 'BD') {
+                        <td><i class="pi pi-users"></i></td>
+                    } @else if (getFieldValue(rowData, col.field) === 'BI_ED') {
+                        <td><i class="pi pi-building" style="margin-right: 0.25rem;"></i><i class="pi pi-user"></i></td>
+                    } @else if (getFieldValue(rowData, col.field) === 'BI_BD') {
+                        <td><i class="pi pi-building" style="margin-right: 0.25rem;"></i><i class="pi pi-users"></i></td>
+                    }
+                } @else if (col.type === 'mitarbeiter_rollen') {
+                    <td>
+                        @for (rolle of getFieldValue(rowData, col.field) | mitarbeiterRolle; track rolle) {
+                            <div style="white-space: nowrap">
+                                {{ 'babsappApp.mitarbeiter.roles.' + rolle | babsTranslate }}
+                            </div>
+                        }
+                    </td>
+                } @else if (col.type === 'mitarbeiter_status') {
+                    <td><babs-tag-value [value]="'babsappApp.mitarbeiter.status.' + rowData[col.field] | translate" [severity]="getMitarbeiterSeverity(rowData[col.field])" /></td>
+                } @else if (col.type === 'mitarbeiter_einsatzorte') {
+                    <td>
+                        <div>
+                            @for (einsatzort of getFieldValue(rowData, col.field) | slice: 0 : 29; track einsatzort; let isLast = $last) {
+                                <span>
+                                            @if (einsatzort['einsatzortStatus'] === 'DEAKTIVIERT') {
+                                                <span
+                                                    class="fa fa-fw fa-exclamation-circle text-danger"
+                                                    aria-hidden="true"
+                                                    placement="top"
+                                                    [ngbPopover]="'babsappApp.einsatzort.deaktiviert' | babsTranslate"
+                                                    triggers="mouseenter:mouseleave"></span>
+                                            }
+                                    <span
+                                        [ngbPopover]="einsatzort['name'] + ' ' + einsatzort['nameErg']"
+                                        [popoverTitle]="einsatzort['code']"
+                                        triggers="mouseenter:mouseleave"
+                                    >{{ einsatzort['code'] }}</span
+                                    >
+                                    @if (!isLast) {
+                                        <span>, </span>
+                                    }
+                                    @if (isLast && getFieldValue(rowData, col.field).length > 29) {
+                                        <span>...</span>
+                                    }
+                                        </span>
+                            }
+                        </div>
+                    </td>
+                } @else if (col.type === 'date_time') {
+                    <td>{{ getFieldValue(rowData, col.field) | date: 'EE dd.MM.yyyy HH:mm' }}</td>
+                } @else if (col.type === 'date') {
+                    <td>{{ rowData[col.field] | date }}</td>
+                } @else if (col.type === 'percentage') {
+                    <td>{{ rowData[col.field]  | number: '1.1' }} %</td>
+                } @else if (col.type === 'boolean') {
+                    @if (rowData[col.field]) {
+                        <td class="text-center">
+                            <i aria-label="ist ausgewaehlt" class="pi" [ngClass]="'text-green-500 pi-check-circle'"></i>
+                        </td>
+                    } @else {
+                        <td class="text-center">
+                            <i aria-label="ist nicht ausgewaehlt" class="pi" [ngClass]="'text-red-500 pi-times-circle'"></i>
+                        </td>
+                    }
+                } @else if (col.type === 'email') {
+                    <td>
+                        <a href="mailto:{{ getFieldValue(rowData, col.field) }}">{{ getFieldValue(rowData, col.field) }}</a>
+                    </td>
+                } @else if (col.type === 'phone') {
+                    <td>
+                        <a href="tel:{{ getFieldValue(rowData, col.field) }}">{{ getFieldValue(rowData, col.field) }}</a>
+                    </td>
+                } @else if (col.type === 'strasse') {
+                    <td>
+                        @if (getFieldValue(rowData, 'breitengrad') === 0) {
+                            <span
+                                class="fa fa-exclamation-circle text-danger"
+                                aria-hidden="true"
+                                [popoverTitle]="'global.help.coordinates.title' | babsTranslate"
+                                [ngbPopover]="'global.help.coordinates.body' | babsTranslate"
+                                triggers="mouseenter:mouseleave"></span>
+                        }
+                        {{ getFieldValue(rowData, col.field) }}
+                    </td>
+                } @else if (col.type === 'sprachen') {
+                    <td>
+                        @for (sprache of getFieldValue(rowData, col.field); track sprache; let isLast = $last) {
+                            <span [pTooltip]="tooltipContent" tooltipPosition="top">
+                                <ng-template #tooltipContent>
+                                    <h1>{{ sprache | babsSprache | babsLanguage }}</h1>
+                                    <p>{{ sprache | babsSprache : true }}</p>
+                                </ng-template>
+
+                                @if (!isLast) {
+                                    <span>{{ sprache }}, </span>
+                                } @else {
+                                    <span>{{ sprache }}</span>
+                                }
+                            </span>
+                        }
+                    </td>
+                } @else {
+                    <td>{{ rowData[col.field] }}</td>
+                }
+            }
+            @if (showView() || showEdit() || showDelete() || showHistory()) {
+                <td>
+                    @if (isReadOnly()) {
+                        @if (showView()) {
+                            <button pButton type="button" (click)="onView(rowData)" aria-label="Details" icon="pi pi-eye" class="btn-text margin-right-5" [attr.id]="'view_' + index"></button>
+                        }
+                    } @else {
+                        @if (showEdit()) {
+                            <button pButton type="button" (click)="onEdit(rowData)" aria-label="Bearbeiten" icon="pi pi-pencil" class="btn-text margin-right-5" [attr.id]="'edit_' + index"></button>
+                        }
+                        @if (showDelete()) {
+                            <button pButton type="button" (click)="onDelete(rowData)" aria-label="Löschen" icon="pi pi-trash" class="btn-text margin-right-5" [attr.id]="'delete_' + index"></button>
+                        }
+                    }
+                    @if (showHistory()) {
+                        <button pButton type="button" (click)="onHistory(rowData)" aria-label="History" icon="pi pi-history" class="btn-text margin-right-5" [attr.id]="'history_' + index"></button>
+                    }
+                </td>
+            }
+        </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+        <tr>
+            <td [attr.colspan]="getColumnLength()">{{ emptyMsg() | translate }}</td>
+        </tr>
+    </ng-template>
+</p-table>

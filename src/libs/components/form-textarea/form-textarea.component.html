@@ -1,0 +1,32 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-floatlabel style="width: 100%" variant="on">
+        <textarea pTextarea
+                  rows="5"
+                  style="width: 100%"
+                  [formControl]="formControl"
+                  [id]="id()"
+                  [disabled]="disabled()"
+                  [attr.readonly]="isReadOnly()"
+                  (contextmenu)="handleRightClick($event)"></textarea>
+        <label [for]="id()">
+            {{ label() | translate }}
+            @if (required()) {
+                <span>*</span>
+            }
+        </label>
+    </p-floatlabel>
+
+    @if (showLength()) {
+        <div style="clear: left; margin-bottom: 10px; width: 100%">
+                <small class="float-end">
+                    {{ 'entity.validation.availablelength' | translate: { length: (availableLength$ | async) } }}
+                </small>
+        </div>
+    }
+
+    @if (formControl?.invalid && formControl?.dirty) {
+        <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}</p-message>
+    }
+</div>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />

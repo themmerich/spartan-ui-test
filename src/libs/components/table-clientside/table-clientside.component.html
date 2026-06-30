@@ -1,0 +1,237 @@
+@if (data() && data().length) {
+    <div>Anzahl: {{ (dt1.filteredValue || data())?.length }}</div>
+}
+<p-table
+    [attr.id]="id()"
+    #dt1
+    stripedRows
+    showGridlines
+    dataKey="id"
+    sortMode="multiple"
+    selectionMode="single"
+    [(selection)]="selectedRow"
+    [size]="'small'"
+    [scrollable]="true"
+    [value]="internalData()"
+    [columns]="internalSelectedColumns()"
+    [resizableColumns]="true"
+    [reorderableColumns]="canReorder()"
+    [exportFilename]="exportFilename()"
+    [csvSeparator]="';'"
+    stateStorage="local"
+    [rowGroupMode]="rowGroupMode()"
+    [groupRowsBy]="groupRowsBy()"
+    [stateKey]="stateKey()"
+    [globalFilterFields]="globalFilterColumns()"
+    [scrollHeight]="scrollHeight()"
+    (onRowReorder)="onReorder($event)"
+>
+    <ng-template #caption>
+        <div class="d-flex justify-content-between align-items-center w-100">
+            @if (showColumnToggle()) {
+                <div class="flex-shrink-0">
+                    <p-multiSelect
+                        id="columnToggler"
+                        display="chip"
+                        [options]="internalColumns()"
+                        [(ngModel)]="internalSelectedColumns"
+                        (ngModelChange)="onColumnsChange($event)"
+                        optionLabel="header"
+                        scrollHeight="400px"
+                        selectedItemsLabel="{0} Spalten ausgewählt"
+                        placeholder="Bitte Spalten auswählen"
+                        ariaLabel="Spaltenauswahl"
+                    />
+                </div>
+            }
+
+            @if (!canReorder() && showSearch()) {
+                <div class="flex-shrink-1 text-center">
+                    <p-iconfield iconPosition="left" aria-label="Suchfeld">
+                        <p-inputicon aria-label="Such-Icon">
+                            <i class="pi pi-search"></i>
+                        </p-inputicon>
+                        <input
+                            id="globalSearch"
+                            pInputText
+                            style="width: 400px"
+                            type="text"
+                            aria-label="Globale Suche"
+                            [(ngModel)]="globalFilterValue"
+                            (input)="dt1.filterGlobal(globalFilterValue(), 'contains')"
+                            placeholder="Suche"
+                        />
+                    </p-iconfield>
+                </div>
+            }
+
+            <div class="flex-shrink-0 d-flex gap-2">
+                @if (exportFilename()) {
+                    <button
+                        aria-label="Exportieren"
+                        type="button"
+                        pButton
+                        label="Exportieren"
+                        icon="pi pi-external-link"
+                        (click)="dt1.exportCSV()"
+                        class="btn-text"
+                        id="export"
+                    ></button>
+                }
+                @if (!isReadOnly() && showAdd()) {
+                    <button
+                        aria-label="Hinzufügen"
+                        type="button"
+                        pButton
+                        *babsHasAnyAuthority="'ROLE_ZENTRALEMA'"
+                        label="Hinzufügen"
+                        icon="pi pi-plus"
+                        (click)="onAdd($event)"
+                        class="btn-text"
+                        id="add"
+                    ></button>
+                }
+                @if (showSearch() || showColumnToggle()) {
+                    <button
+                        aria-label="Löschen"
+                        type="button"
+                        pButton
+                        label="Löschen"
+                        icon="pi pi-filter-slash"
+                        (click)="clearFilters(dt1)"
+                        class="btn-text"
+                        id="clear"
+                    ></button>
+                }
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #header let-columns>
+        <tr>
+            @if (canReorder()) {
+                <th class="reorder-col">&nbsp;</th>
+            }
+            @for (col of columns; track col.field) {
+                @if (col.sort) {
+                    <th pResizableColumn pSortableColumn="{{ col.field }}" id="header_{{ col.field }}">
+                        <div>
+                            {{ col.header | translate }}
+                            <p-sortIcon field="{{ col.field }}" />
+                            <babs-table-column-filter [col]="col" [options]="options" />
+                        </div>
+                    </th>
+                } @else {
+                    <th>{{ col.header | translate }}</th>
+                }
+            }
+            @if (
+                showView() ||
+                showEdit() ||
+                showDelete() ||
+                showHistory() ||
+                showLocations() ||
+                showDownload() ||
+                showFile() ||
+                showAssign() ||
+                showAssignUser() ||
+                showRemoveUser() ||
+                showActivate() ||
+                showDeactivate()
+                ) {
+                <th>Aktion</th>
+            }
+        </tr>
+    </ng-template>
+
+    <ng-template #groupheader let-rowData let-index="rowIndex" let-expanded="expanded">
+        <tr>
+            <td [colSpan]="getColumnLength()" class="group-header">
+                <button
+                    type="button"
+                    pButton
+                    pRipple
+                    [pRowToggler]="rowData"
+                    text
+                    rounded
+                    plain
+                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+                ></button>
+                <span
+                ><b
+                ><a [href]="'#/zentralesteuerungen/dolmetscher-buero/' + rowData.bueroId">{{
+                        rowData.user
+                    }}</a></b
+                ></span
+                >
+            </td>
+        </tr>
+    </ng-template>
+    <!-- expandedrow -->
+    <ng-template #body let-rowData let-columns="columns" let-index="rowIndex">
+        <tr [pSelectableRow]="rowData" [pReorderableRow]="index">
+            @if (canReorder()) {
+                <td class="reorder-col">
+                    <span class="pi pi-bars" pReorderableRowHandle></span>
+                </td>
+            }
+            @for (col of columns; track col.field) {
+                <td babsTableCell [col]="col" [rowData]="rowData" [isReadOnly]="isReadOnly()"></td>
+            }
+            @if (
+                showView() ||
+                showEdit() ||
+                showDelete() ||
+                showHistory() ||
+                showLocations() ||
+                showDownload() ||
+                showFile() ||
+                showAssign() ||
+                showAssignUser() ||
+                showRemoveUser() ||
+                showActivate() ||
+                showDeactivate()
+                ) {
+                <td
+                    babsTableRowActions
+                    [rowData]="rowData"
+                    [index]="index"
+                    [inTerminKontext]="inTerminKontext()"
+                    [isReadOnly]="isReadOnly()"
+                    [showView]="showView()"
+                    [showEdit]="showEdit()"
+                    [showDelete]="showDelete()"
+                    [showViewMitarbeiter]="showViewMitarbeiter()"
+                    [showHistory]="showHistory()"
+                    [showLocations]="showLocations()"
+                    [showDownload]="showDownload()"
+                    [showFile]="showFile()"
+                    [showAssign]="showAssign()"
+                    [showAssignUser]="showAssignUser()"
+                    [showRemoveUser]="showRemoveUser()"
+                    [showActivate]="showActivate()"
+                    [showDeactivate]="showDeactivate()"
+                    (view)="onView($event)"
+                    (edit)="onEdit($event)"
+                    (delete)="onDelete($event)"
+                    (viewMitarbeiter)="onViewMitarbeiter($event)"
+                    (history)="onHistory($event)"
+                    (locations)="onLocations($event)"
+                    (download)="onDownload($event)"
+                    (file)="onFile($event)"
+                    (assign)="onAssign($event)"
+                    (assignUser)="onAssignUser($event)"
+                    (removeUser)="onRemoveUser($event)"
+                    (activate)="onActivate($event)"
+                    (deactivate)="onDeactivate($event)"
+                ></td>
+            }
+        </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+        <tr>
+            <td [attr.colspan]="getColumnLength()">{{ emptyMsg() | translate }}</td>
+        </tr>
+    </ng-template>
+</p-table>

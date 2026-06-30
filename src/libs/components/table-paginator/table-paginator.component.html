@@ -1,0 +1,35 @@
+<ngb-pagination
+    [collectionSize]="totalItems"
+    [page]="page"
+    [pageSize]="pageSize"
+    (pageChange)="callLoadPageOnParent($event)"
+    [rotate]="true"
+    [ellipses]="true"
+    [boundaryLinks]="true"
+    [maxSize]="5"
+    size="sm">
+    <ng-template ngbPaginationNumber let-page>
+        <span [id]="'page_' + page">
+            <span aria-hidden="true">
+                {{ padPagination(page) }}
+            </span>
+            <span class="sr-only">
+                <span>{{ 'global.terms.page' | babsTranslate }}</span>
+                {{ page }}
+                <span>{{ 'global.terms.show' | babsTranslate }}</span>
+            </span>
+        </span>
+    </ng-template>
+    <ng-template ngbPaginationFirst>
+        <i aria-hidden="true" class="fa fa-angle-double-left"></i>
+    </ng-template>
+    <ng-template ngbPaginationPrevious>
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+    </ng-template>
+    <ng-template ngbPaginationNext>
+        <i aria-hidden="true" class="fa fa-angle-right"></i>
+    </ng-template>
+    <ng-template ngbPaginationLast>
+        <i aria-hidden="true" class="fa fa-angle-double-right"></i>
+    </ng-template>
+</ngb-pagination>

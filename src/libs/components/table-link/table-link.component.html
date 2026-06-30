@@ -1,0 +1,10 @@
+<span
+    >{{ zweitesFeld ? erstesFeld.toUpperCase() : erstesFeld }} {{ zweitesFeld }}
+    @if (isLink) {
+        <code role="button" tabindex="0" (click)="navigateTo()" (keydown.enter)="navigateTo()" (keydown.space)="navigateTo()" class="is-link"
+            >({{ linkText }})</code
+        >
+    } @else {
+        <code>({{ linkText }})</code>
+    }
+</span>
