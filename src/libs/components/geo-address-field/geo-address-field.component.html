@@ -1,0 +1,37 @@
+<div [formGroup]="formGroup" class="form-group row mb-3">
+    <span tabindex="{{ tabindex }}" [attr.babsHelp]="labelHelp" babsHelp="{{ labelHelp }}">
+        <label class="col-form-label" babsTranslate="{{ label }}" for="field_{{ id }}">{{ labelStatic }}</label>
+    </span>
+    <div class="col-sm">
+        @if (!isEditGeo) {
+            <span class="form-control pseudoDisabled" [ngbTooltip]="isGeoManuellFlag ? ('global.field.manuellHinzugefuegt' | babsTranslate) : null">
+                @if (formValue) {
+                    <span> {{ formValue | number: '2.6-6' }} ° </span>
+                }
+                @if (formValue === 0) {
+                    <span
+                        class="fa fa-exclamation-circle text-danger"
+                        aria-hidden="true"
+                        [popoverTitle]="'global.help.coordinates.title' | babsTranslate"
+                        [ngbPopover]="'global.help.coordinates.body' | babsTranslate"
+                        triggers="mouseenter:mouseleave"
+                        babsTranslate="babsappApp.dolmetscher.dialog.invalidAddress">
+                    </span>
+                }
+            </span>
+        }
+        @if (isEditGeo) {
+            <input
+                id="{{ id }}"
+                name="{{ name }}"
+                formControlName="{{ name }}"
+                babsExtFormControlName
+                placeholder="{{ placeholder }}"
+                type="{{ type }}"
+                step="{{ step }}"
+                autocomplete="{{ autocomplete }}"
+                class="form-control" />
+        }
+        <babs-field-error [field]="control" [savedId]="savedId" patternKey="{{ patternKey }}"></babs-field-error>
+    </div>
+</div>

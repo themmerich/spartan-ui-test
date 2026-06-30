@@ -1,0 +1,28 @@
+<ng-content></ng-content>
+<ng-template #popContent>
+    @if (helpText && isHelpActivated) {
+        <div class="sr-only">
+            {{ 'babsHelp.hilfetextWirdEingeblendet' | babsTranslate }}
+        </div>
+    }
+    <span [innerHtml]="helpText">
+        {{ helpText }}
+    </span>
+</ng-template>
+@if (helpText && isHelpActivated) {
+    <span
+        class="popoverHelp"
+        [tabindex]="helpText && isHelpActivated && !helpNotAvailable ? 0 : -1"
+        [class.helpNotAvailable]="helpNotAvailable"
+        [placement]="helpPos"
+        triggers="manual"
+        #myPopover="ngbPopover"
+        (click)="toggleHelpOnClick(myPopover)"
+        (mouseover)="showHelpOnMouseover(myPopover)"
+        (keydown)="showHelpOnKeydown($event, myPopover)"
+        [ngbPopover]="popContent"
+        (focus)="showHelpOnMouseover(myPopover)"
+        (blur)="hideHelpOnMouseout(myPopover)"
+        container="body">
+    </span>
+}

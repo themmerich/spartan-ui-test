@@ -1,0 +1,34 @@
+<div [formGroup]="formGroup" class="form-group row mb-3">
+    <span tabindex="{{ tabindex }}" [attr.babsHelp]="labelHelp" babsHelp="{{ labelHelp }}">
+        <label class="col-form-label" babsTranslate="{{ label }}" for="field_{{ id }}">{{ labelStatic }}</label>
+    </span>
+    <div class="col-sm">
+        @if (!isEditGeo) {
+            <span class="form-control pseudoDisabled" [ngbTooltip]="isGeoManuellFlag ? ('global.field.manuellHinzugefuegt' | babsTranslate) : null">
+                @if (formValue) {
+                    <span>
+                        {{ formValue }}
+                    </span>
+                }
+                @if (savedId !== null && (formValue === null || formValue === '')) {
+                    <span
+                        class="fa fa-exclamation-circle text-danger"
+                        aria-hidden="true"
+                        [popoverTitle]="'global.help.coordinates.title' | babsTranslate"
+                        [ngbPopover]="'global.help.coordinates.body' | babsTranslate"
+                        triggers="mouseenter:mouseleave"
+                        babsTranslate="babsappApp.dolmetscher.dialog.invalidAddress">
+                    </span>
+                }
+            </span>
+        }
+        @if (isEditGeo) {
+            <ng-select required id="{{ id }}" placeholder="{{ placeholder }}" formControlName="{{ name }}" [items]="items">
+                <ng-template ng-option-tmp let-item="item">
+                    {{ item }}
+                </ng-template>
+            </ng-select>
+        }
+        <babs-field-error [field]="control" [savedId]="savedId"></babs-field-error>
+    </div>
+</div>

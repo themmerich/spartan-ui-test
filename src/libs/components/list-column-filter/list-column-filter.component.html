@@ -1,0 +1,9 @@
+<p-columnFilter [field]="field()" display="menu" [matchMode]="matchMode()" [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+    <ng-template #filter let-value let-filter="filterCallback">
+        <p-multiSelect [ngModel]="value" (ngModelChange)="filter($event)" [options]="options()" scrollHeight="450px" styleClass="w-full" placeholder="Alle">
+            <ng-template let-option #item>
+                <span>{{ option }}</span>
+            </ng-template>
+        </p-multiSelect>
+    </ng-template>
+</p-columnFilter>

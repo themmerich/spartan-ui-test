@@ -1,0 +1,31 @@
+<div [formGroup]="formGroup" class="form-group row mb-3">
+    <span tabindex="{{ tabindex }}" [attr.babsHelp]="labelHelp" babsHelp="{{ labelHelp }}">
+        <label class="col-form-label" babsTranslate="{{ label }}" for="field_{{ id }}">{{ labelStatic }}</label>
+    </span>
+    <div class="col-sm">
+        <input
+            id="{{ id }}"
+            name="{{ name }}"
+            formControlName="{{ name }}"
+            babsExtFormControlName
+            placeholder="{{ placeholder }}"
+            type="{{ type }}"
+            [mask]="mask"
+            autocomplete="{{ autocomplete }}"
+            class="form-control"
+            maxlength="{{ maxLength }}"
+            minlength="{{ minLength }}"
+            (input)="onInput($event)" />
+        @if (showInfo) {
+            <small class="form-text text-info" [hidden]="hidden" babsTranslate="{{ infoMsg }}">
+                {{ infoText }}
+            </small>
+        }
+        <babs-field-error
+            [field]="control"
+            [savedId]="savedId"
+            [customErrors]="customErrors"
+            patternKey="{{ patternKey }}"
+            exactLength="{{ exactLength }}"></babs-field-error>
+    </div>
+</div>

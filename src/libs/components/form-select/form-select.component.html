@@ -1,0 +1,38 @@
+<div style="margin-top: 10px; width: 100%">
+    <p-floatlabel variant="on" style="width: 100%">
+        <p-select [formControl]="formControl"
+                  [id]="id()"
+                  [disabled]="disabled()"
+                  [options]="options()"
+                  [optionLabel]="optionLabel()"
+                  [optionValue]="optionValue()"
+                  [scrollHeight]="scrollHeight()"
+                  [group]="group()"
+                  [showClear]="showClear()"
+                  (onChange)="change($event)"
+                  [filter]="showFilter()"
+                  [attr.aria-labelledby]="'label-' + id()"
+                  filterBy="name"
+                  class="select-style"
+                  (contextmenu)="handleRightClick($event)">
+            @if (group()) {
+                <ng-template let-group #group>
+                    <div class="flex items-center group-header">
+                        <span>{{ group.name }}</span>
+                    </div>
+                </ng-template>
+            }
+        </p-select>
+        <label [for]="id()" [id]="'label-' + id()">
+            {{ label() | translate }}
+            @if (required()) {
+                <span>*</span>
+            }
+        </label>
+    </p-floatlabel>
+    @if (formControl?.invalid && formControl?.dirty) {
+        <p-message severity="error" size="small" variant="simple">{{ getErrorMessage() | translate }}</p-message>
+    }
+</div>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />

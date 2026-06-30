@@ -1,0 +1,22 @@
+<div [formGroup]="formGroup" class="form-group row mb-3">
+    <span tabindex="{{ tabindex }}" [attr.babsHelp]="labelHelp" babsHelp="{{ labelHelp }}">
+        <label class="col-form-label" babsTranslate="{{ label }}" for="field_{{ id }}">{{ labelStatic }}</label>
+    </span>
+    <div class="col-sm">
+        <select
+            id="{{ id }}"
+            name="{{ name }}"
+            formControlName="{{ name }}"
+            class="form-control form-select"
+            [required]="isRequired"
+            [pattern]="isRequired ? 'REGISTRIERT' : ''">
+            <option [ngValue]="null"></option>
+            @for (i of items; track i) {
+                <option value="{{ i }}">
+                    {{ labelValues + i | babsTranslate }}
+                </option>
+            }
+        </select>
+        <babs-field-error [field]="control" [savedId]="savedId" patternKey="{{ patternKey }}"></babs-field-error>
+    </div>
+</div>

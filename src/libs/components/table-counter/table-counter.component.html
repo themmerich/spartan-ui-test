@@ -1,0 +1,41 @@
+<div class="text-info center-small {{ class }}" id="record-counter">
+    @if (isLoaded) {
+        <span aria-hidden="true">
+            {{ 'global.terms.page' | babsTranslate }} {{ page + 1 }}: {{ fromEntry }}&ndash;{{ toEntry }}
+            {{ 'global.terms.von' | babsTranslate }}
+            {{ totalItems ? totalItems : 0 }}
+            @if (isFiltered) {
+                <span> {{ 'global.terms.activeFilter' | babsTranslate }}</span>
+            }
+        </span>
+    } @else {
+        <span aria-hidden="true">
+            <em class="spinner fa fa-spinner fa-spin"></em>
+            {{ 'global.terms.loading' | babsTranslate }}
+        </span>
+    }
+
+    <!-- contentLoaded -->
+    <ng-template #contentLoaded>
+        <span aria-hidden="true">
+            {{ 'global.terms.page' | babsTranslate }} {{ page + 1 }}: {{ fromEntry }}&ndash;{{ toEntry }}
+            {{ 'global.terms.von' | babsTranslate }}
+            {{ totalItems ? totalItems : 0 }}
+            @if (isFiltered) {
+                <span> {{ 'global.terms.activeFilter' | babsTranslate }}</span>
+            }
+        </span>
+    </ng-template>
+
+    <!-- contentNotLoaded -->
+    <ng-template #contentNotLoaded>
+        <span aria-hidden="true">
+            <em class="spinner fa fa-spinner fa-spin"></em>
+            {{ 'global.terms.loading' | babsTranslate }}
+        </span>
+    </ng-template>
+
+    <span aria-live="polite" class="sr-only">
+        {{ this.ariaLive }}
+    </span>
+</div>

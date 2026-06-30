@@ -1,0 +1,89 @@
+@switch (col().type) {
+    @case ('boolean') {
+        <p-columnFilter type="boolean" field="{{ col().field }}" display="menu" />
+    }
+    @case ('number') {
+        <p-columnFilter type="numeric" field="{{ col().field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+    }
+    @case ('percentage') {
+        <p-columnFilter type="numeric" field="{{ col().field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+    }
+    @case ('date') {
+        <p-columnFilter type="date" field="{{ col().field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+    }
+    @case ('date_time') {
+        <p-columnFilter type="date" field="{{ col().field }}" display="menu" [showOperator]="false" [showAddButton]="false" />
+    }
+    @case ('status') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().statusList" />
+    }
+    @case ('termin_typ') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().terminTypList" />
+    }
+    @case ('status_einsatzort') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().einsatzortStatusList" />
+    }
+    @case ('status_externer_einsatzort') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().einsatzortStatusList" />
+    }
+    @case ('wechsel_art') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().wechselArt" />
+    }
+    @case ('platz_kategorie') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().platzKategorie" />
+    }
+    @case ('platz_status') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().platzStatus" />
+    }
+    @case ('dms_status') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().dmsStatus" />
+    }
+    @case ('regel_aktiv') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().regelStatus" />
+    }
+    @case ('dms_kategorie') {
+        <babs-list-columnfilter field="{{ col().field }}" matchMode="arrayContains" [options]="options().dmsKategorie" />
+    }
+    @case ('dms_vorlagenart') {
+        <babs-list-columnfilter field="{{ col().field }}" matchMode="arrayContains" [options]="options().dmsArt" />
+    }
+    @case ('dms_variante') {
+        <babs-list-columnfilter field="{{ col().field }}" matchMode="arrayContains" [options]="options().dmsVariante" />
+    }
+    @case ('news_status') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().newsStatus" />
+    }
+    @case ('news_rollen') {
+        <babs-list-columnfilter field="{{ col().field }}" matchMode="zielgruppeContains" [options]="options().newsZielgruppen" />
+    }
+    @case ('mitarbeiter_rollen') {
+        <babs-list-columnfilter field="{{ col().field }}" matchMode="zielgruppeContains" [options]="options().mitarbeiterRollen" />
+    }
+    @case ('faq_kategorie') {
+        <babs-list-columnfilter field="{{ col().field }}" matchMode="categoryContains" [options]="options().faqKategorien" />
+    }
+    @case ('faq_zielgruppe') {
+        <babs-list-columnfilter field="{{ col().field }}" matchMode="zielgruppeContains" [options]="options().faqZielgruppen" />
+    }
+    @case ('regel_kategorie') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().regelList" />
+    }
+    @case ('uebersetzung_uebersetzungsrichtung') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().uebersetzungsRichtung" />
+    }
+    @case ('wiedervorlagen_grund') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().wiedervorlageGrund" />
+    }
+    @case ('wiedervorlagen_modus') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().wiedervorlageModus" />
+    }
+    @case ('wiedervorlagen_stand') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().wiedervorlageStand" />
+    }
+    @case ('profiltyp') {
+        <babs-list-columnfilter field="{{ col().field }}" [options]="options().profilTypen" />
+    }
+    @default {
+        <p-columnFilter type="text" field="{{ col().field }}" display="menu" [matchMode]="'contains'" [showOperator]="false" [showAddButton]="false" />
+    }
+}

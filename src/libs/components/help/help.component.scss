@@ -1,0 +1,32 @@
+@use '../../../../src/lib/babs-variables' as vars;
+.popoverHelp {
+    font-family: FontAwesome, sans-serif;
+    font-size: 14px;
+    &:before {
+        cursor: help;
+        min-width: 18px;
+        color: rgb(50, 50, 50);
+        text-shadow: 1px 1px white;
+        content: '\f059 ';
+        text-align: right !important; // <- ToDo Nachfragen bei lokaler Abnahme ob Rechtsbündig vllt. sogar besser?
+        margin-right: 3px !important;
+        margin-left: 3px !important;
+        text-decoration: none !important;
+        pointer-events: all !important;
+    }
+    &.helpNotAvailable {
+        &:before {
+            visibility: hidden;
+            min-width: 18px;
+        }
+    }
+}
+
+button {
+    :host ::ng-deep .popoverHelp:before {
+        //margin-left:5px!important;
+        color: rgb(50, 50, 50) !important;
+        text-align: right !important;
+        text-decoration: none !important;
+    }
+}

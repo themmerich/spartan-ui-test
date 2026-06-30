@@ -1,0 +1,45 @@
+<p-table [attr.id]="id()"
+         [value]="history()"
+         dataKey="id"
+         [expandedRowKeys]="expandedRows()"
+         [tableStyle]="{ 'min-width': '50rem'}">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Datum</th>
+            <th>Kategorie</th>
+            <th style="width: 4rem"></th>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row>
+        <tr>
+            <td>{{ row.datum | date:'dd.MM.yyyy' }}</td>
+            <td>{{ row.kategorie }}</td>
+            <td>
+                @let expanded = expandedRows()[row.id];
+                <button pButton type="button" (click)="toggleRow(row)" class="p-button-text p-button-sm">
+                    <i class="pi" [ngClass]="expanded ? 'pi-chevron-down' : 'pi-chevron-up'"></i>
+                </button>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="expandedrow" let-row>
+        <tr>
+            <td colspan="3">
+                <babs-table-clientside
+                    [data]="row.entries"
+                    [columns]="subTableColumns"
+                    [emptyMsg]="'Keine Einträge vorhanden'"
+                    [exportFilename]="'exportHistoryRowEntries'"
+                    [stateKey]="`historyRowEntries_${row.id}`"
+                    (view)="openHistoryDialog($event.feld)"
+                    [showView]="true"
+                    [isReadOnly]="true"
+                />
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<babs-history-dialog [id]="id()" [visible]="this.showHistoryDialog()" (showHistoryDialog)="this.showHistoryDialog.set($event)" (cancel)="cancelHistoryDialog()" />

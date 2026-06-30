@@ -1,0 +1,25 @@
+.text-green-500 {
+    color: green;
+}
+.text-red-500 {
+    color: red;
+}
+.btn-space {
+    margin-left: 10px;
+}
+.w-full {
+    width: 100%;
+}
+.btn-text {
+    color: black;
+}
+:host ::ng-deep .p-multiselect-option:not(.p-multiselect-option-selected):not(.p-disabled).p-focus {
+    background: #6f8faf;
+}
+:host ::ng-deep .p-multiselect:not(.p-disabled).p-focus {
+    border-color: black;
+    border-width: 2px;
+}
+:host ::ng-deep .p-inputtext:enabled:focus {
+    border-color: black;
+}
