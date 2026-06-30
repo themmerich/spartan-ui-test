@@ -1,0 +1,40 @@
+<div class="mt-2.5 w-full">
+  <label hlmLabel [for]="id()" class="mb-1.5">
+    {{ label() | translate }}
+    @if (required()) {
+      <span class="text-destructive">*</span>
+    }
+  </label>
+
+  <hlm-input-group>
+    <input
+      hlmInputGroupInput
+      type="number"
+      [formControl]="formControl!"
+      [id]="id()"
+      [step]="step()"
+      [autocomplete]="autocomplete()"
+      [attr.readonly]="isReadOnly()"
+      [attr.disabled]="disabled() ? '' : null"
+      [attr.aria-invalid]="formControl?.invalid && formControl?.dirty ? 'true' : null"
+      (blur)="onBlur($event)"
+    />
+
+    @if (suffix()) {
+      <hlm-input-group-addon align="inline-end">
+        <span hlmInputGroupText>{{ suffix() }}</span>
+      </hlm-input-group-addon>
+    }
+    @if (unit()) {
+      <hlm-input-group-addon align="inline-end">
+        <span hlmInputGroupText>{{ unit() }}</span>
+      </hlm-input-group-addon>
+    }
+  </hlm-input-group>
+
+  @if (formControl?.invalid && formControl?.dirty) {
+    <p class="text-destructive mt-1.5 text-sm">
+      {{ getErrorMessage() | translate: { minLength: minLength(), maxLength: maxLength(), min: min(), max: max(), name: name() } }}
+    </p>
+  }
+</div>
