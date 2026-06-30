@@ -2,7 +2,7 @@
 
 Migrierte Komponenten (von PrimeNG auf [Spartan UI](https://spartan.ng)), die in der echten App die bisherigen `src/libs/components/*`-Wrapper ersetzen.
 
-Stand: aktuell migriert: `form-input`, `form-number`, `form-select`, `form-phone`, `form-checkbox`.
+Stand: aktuell migriert: `form-input`, `form-number`, `form-select`, `form-phone`, `form-checkbox`, `form-datepicker`.
 
 ---
 
@@ -75,3 +75,4 @@ scannt (bei expliziten content-Globs ergänzen), sonst fehlen die Utility-Klasse
 | `form-select` | ✅ migriert | helm `select` (Overlay via `*hlmSelectPortal`); ohne `babs-history-dialog`; `showFilter`/`showClear` nicht unterstützt |
 | `form-phone`  | ✅ migriert | natives `type="tel"`; ohne `babs-history-dialog`                                             |
 | `form-checkbox` | ✅ migriert | helm `checkbox` (CVA); ohne `babs-history-dialog`; `binary` inert (immer boolean); `disabled` über das FormControl steuern (nicht das Input) |
+| `form-datepicker` | ✅ migriert | helm `date-picker` (CVA, `Date`); ohne `babs-history-dialog`; luxon → natives `Intl`/Format; **nicht unterstützt**: `showTime`, `showWeek`, `showClear`, `dataType='string'`, `appendTo`/`baseZIndex` (Inputs bleiben für API-Kompat, sind aber inert); Wochenstart Sonntag statt Montag |

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TranslateService } from '@ngx-translate/core';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { FormCheckboxComponent } from '../../libs/spartan/form-checkbox/form-checkbox.component';
+import { FormDatepickerComponent } from '../../libs/spartan/form-datepicker/form-datepicker.component';
 import { FormInputComponent } from '../../libs/spartan/form-input/form-input.component';
 import { FormNumberComponent } from '../../libs/spartan/form-number/form-number.component';
 import { FormPhoneComponent } from '../../libs/spartan/form-phone/form-phone.component';
@@ -14,6 +15,7 @@ import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.
   imports: [
     ReactiveFormsModule,
     FormCheckboxComponent,
+    FormDatepickerComponent,
     FormInputComponent,
     FormNumberComponent,
     FormPhoneComponent,
@@ -57,6 +59,14 @@ export class SpartanDemo {
     terms: new FormControl(false, [Validators.requiredTrue]),
     notifications: new FormControl({ value: false, disabled: true }),
   });
+
+  protected readonly dateForm = new FormGroup({
+    birthdate: new FormControl<Date | null>(new Date(2000, 0, 15)),
+    appointment: new FormControl<Date | null>(null, [Validators.required]),
+  });
+
+  protected readonly appointmentMin = new Date(2026, 0, 1);
+  protected readonly appointmentMax = new Date(2026, 11, 31);
 
   protected readonly countries = [
     { name: 'Deutschland', value: 'de' },
@@ -104,6 +114,8 @@ export class SpartanDemo {
         newsletter: 'Newsletter abonnieren',
         terms: 'AGB akzeptieren',
         notifications: 'Benachrichtigungen aktivieren',
+        birthdate: 'Geburtsdatum',
+        appointment: 'Termin',
       },
       entity: {
         validation: {
@@ -123,6 +135,11 @@ export class SpartanDemo {
           maxlengthNew: 'Höchstens {{maxLength}} Stellen erlaubt.',
           deactivatable: 'Dieser Eintrag kann nicht deaktiviert werden.',
           'pattern-phone-new': 'Ungültige Telefonnummer.',
+          requiredPattern: 'Bitte ein gültiges Datum eingeben ({{pattern}}).',
+          requiredPatternBeforePrefix: 'Pflichtfeld – frühestens {{datum}} ({{pattern}}).',
+          requiredPatternAfterPrefix: 'Pflichtfeld – spätestens {{datum}} ({{pattern}}).',
+          requiredBetweenPrefix: 'Pflichtfeld – zwischen {{minDatum}} und {{maxDatum}} ({{pattern}}).',
+          requiredBeforeStart: 'Das Datum darf nicht vor dem Startdatum liegen.',
         },
       },
     });

@@ -120,6 +120,27 @@
 
     <div hlmCard>
       <div hlmCardHeader>
+        <h3 hlmCardTitle>form-datepicker</h3>
+        <p hlmCardDescription>
+          Datumsauswahl (helm `date-picker`) mit Label, Min/Max-Grenzen und Pflichtvalidierung.
+        </p>
+      </div>
+      <div hlmCardContent>
+        <form [formGroup]="dateForm" class="grid gap-2 sm:grid-cols-2">
+          <babs-form-datepicker id="birthdate" label="demo.birthdate" />
+          <babs-form-datepicker
+            id="appointment"
+            label="demo.appointment"
+            [required]="true"
+            [minDate]="appointmentMin"
+            [maxDate]="appointmentMax"
+          />
+        </form>
+      </div>
+    </div>
+
+    <div hlmCard>
+      <div hlmCardHeader>
         <h3 hlmCardTitle>Live-Werte</h3>
         <p hlmCardDescription>Direkt an die FormGroups gebunden.</p>
       </div>
@@ -129,8 +150,9 @@
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ selectForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ phoneForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ checkboxForm.value | json }}</pre>
+        <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ dateForm.value | json }}</pre>
         <span class="text-sm text-muted-foreground">
-          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }}
+          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }} · form-datepicker: {{ dateForm.valid ? 'ja' : 'nein' }}
         </span>
       </div>
     </div>
