@@ -1,0 +1,42 @@
+<div class="mt-2.5 w-full">
+  <label hlmLabel [for]="id()" class="mb-1.5">
+    {{ label() | translate }}
+    @if (required()) {
+      <span class="text-destructive">*</span>
+    }
+  </label>
+
+  <hlm-input-group>
+    <input
+      hlmInputGroupInput
+      [formControl]="formControl!"
+      [id]="id()"
+      [autocomplete]="autocomplete()"
+      [placeholder]="placeholder()"
+      [attr.readonly]="isReadOnly()"
+      [attr.disabled]="disabled() ? '' : null"
+      [attr.aria-invalid]="formControl?.invalid && formControl?.dirty ? 'true' : null"
+      (blur)="onBlur($event)"
+      (input)="handleInput($event)"
+    />
+
+    @if (unit()) {
+      <hlm-input-group-addon align="inline-end">
+        <span hlmInputGroupText>{{ unit() }}</span>
+      </hlm-input-group-addon>
+    }
+    @if (link()) {
+      <hlm-input-group-addon align="inline-end">
+        <button hlmInputGroupButton type="button" [routerLink]="link()" [attr.aria-label]="label() | translate">
+          <ng-icon name="lucideExternalLink" />
+        </button>
+      </hlm-input-group-addon>
+    }
+  </hlm-input-group>
+
+  @if (formControl?.invalid && formControl?.dirty) {
+    <p class="text-destructive mt-1.5 text-sm">
+      {{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}
+    </p>
+  }
+</div>
