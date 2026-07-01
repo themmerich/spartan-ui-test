@@ -141,6 +141,21 @@
 
     <div hlmCard>
       <div hlmCardHeader>
+        <h3 hlmCardTitle>form-email</h3>
+        <p hlmCardDescription>
+          E-Mail-Feld (native <code class="text-xs">type="email"</code>) mit Label, E-Mail- und Pflichtvalidierung.
+        </p>
+      </div>
+      <div hlmCardContent>
+        <form [formGroup]="emailForm" class="grid gap-2 sm:grid-cols-2">
+          <babs-form-email id="email" label="demo.email" autocomplete="email" />
+          <babs-form-email id="invoiceEmail" label="demo.invoiceEmail" [required]="true" />
+        </form>
+      </div>
+    </div>
+
+    <div hlmCard>
+      <div hlmCardHeader>
         <h3 hlmCardTitle>Live-Werte</h3>
         <p hlmCardDescription>Direkt an die FormGroups gebunden.</p>
       </div>
@@ -151,8 +166,9 @@
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ phoneForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ checkboxForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ dateForm.value | json }}</pre>
+        <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ emailForm.value | json }}</pre>
         <span class="text-sm text-muted-foreground">
-          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }} · form-datepicker: {{ dateForm.valid ? 'ja' : 'nein' }}
+          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }} · form-datepicker: {{ dateForm.valid ? 'ja' : 'nein' }} · form-email: {{ emailForm.valid ? 'ja' : 'nein' }}
         </span>
       </div>
     </div>
