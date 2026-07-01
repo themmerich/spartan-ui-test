@@ -171,6 +171,32 @@
 
     <div hlmCard>
       <div hlmCardHeader>
+        <h3 hlmCardTitle>form-input-mask</h3>
+        <p hlmCardDescription>
+          Maskiertes Eingabefeld (ngx-mask) mit Label, Uppercase, Einheit/Link-Addon und Pflichtvalidierung.
+        </p>
+      </div>
+      <div hlmCardContent>
+        <form [formGroup]="maskForm" class="grid gap-2 sm:grid-cols-2">
+          <babs-form-input-mask
+            id="iban"
+            label="demo.iban"
+            mask="aa99 9999 9999 9999 9999 99"
+            [uppercase]="true"
+          />
+          <babs-form-input-mask
+            id="zipCode"
+            label="demo.zipCode"
+            mask="99999"
+            unit="DE"
+            [required]="true"
+          />
+        </form>
+      </div>
+    </div>
+
+    <div hlmCard>
+      <div hlmCardHeader>
         <h3 hlmCardTitle>Live-Werte</h3>
         <p hlmCardDescription>Direkt an die FormGroups gebunden.</p>
       </div>
@@ -183,8 +209,9 @@
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ dateForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ emailForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ editorForm.value | json }}</pre>
+        <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ maskForm.value | json }}</pre>
         <span class="text-sm text-muted-foreground">
-          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }} · form-datepicker: {{ dateForm.valid ? 'ja' : 'nein' }} · form-email: {{ emailForm.valid ? 'ja' : 'nein' }} · form-editor: {{ editorForm.valid ? 'ja' : 'nein' }}
+          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }} · form-datepicker: {{ dateForm.valid ? 'ja' : 'nein' }} · form-email: {{ emailForm.valid ? 'ja' : 'nein' }} · form-editor: {{ editorForm.valid ? 'ja' : 'nein' }} · form-input-mask: {{ maskForm.valid ? 'ja' : 'nein' }}
         </span>
       </div>
     </div>

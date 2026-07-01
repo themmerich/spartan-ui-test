@@ -2,7 +2,7 @@
 
 Migrierte Komponenten (von PrimeNG auf [Spartan UI](https://spartan.ng)), die in der echten App die bisherigen `src/libs/components/*`-Wrapper ersetzen.
 
-Stand: aktuell migriert: `form-input`, `form-number`, `form-select`, `form-phone`, `form-checkbox`, `form-datepicker`, `form-email`, `form-editor`.
+Stand: aktuell migriert: `form-input`, `form-number`, `form-select`, `form-phone`, `form-checkbox`, `form-datepicker`, `form-email`, `form-editor`, `form-input-mask`.
 
 ---
 
@@ -35,6 +35,9 @@ Direkt oder transitiv benötigt:
 - **nur für `form-editor`**: `ngx-quill` + `quill` (helm hat keinen Rich-Text-Editor).
   Zusätzlich `@import 'quill/dist/quill.snow.css';` global in `styles.scss` und
   `"allowedCommonJsDependencies": ["quill-delta"]` in `angular.json`.
+- **nur für `form-input-mask`**: `ngx-mask` (helm hat keine Mask). Installation mit
+  `--legacy-peer-deps` (v21 gibt offiziell erst Angular 21 frei); der Provider
+  `provideNgxMask()` ist in der Komponente gescoped, keine app.config-Änderung nötig.
 
 ### 3. Die richtigen helm-Komponenten generieren
 
@@ -79,5 +82,6 @@ scannt (bei expliziten content-Globs ergänzen), sonst fehlen die Utility-Klasse
 | `form-phone`  | ✅ migriert | natives `type="tel"`; ohne `babs-history-dialog`                                             |
 | `form-email`  | ✅ migriert | natives `type="email"`; ohne `babs-history-dialog`                                            |
 | `form-editor` | ✅ migriert | **kein helm-Rich-Text-Editor** → `ngx-quill` (+ `quill`) mit Spartan-Styling (`quill.snow.css` + `::ng-deep`-Overrides); HTML-Wert bleibt erhalten; ohne `babs-history-dialog`; `blury` über natives `focusout` |
+| `form-input-mask` | ✅ migriert | **keine helm-Mask** → `ngx-mask@21` (Peer-Override `--legacy-peer-deps`, offiziell erst Angular 21); Masken-Syntax wird PrimeNG→ngx-mask konvertiert (`a/9/*`→`S/0/A`); `uppercase` via `inputTransformFn`; Wert inkl. Literale (`dropSpecialCharacters=false`); ohne `babs-history-dialog` |
 | `form-checkbox` | ✅ migriert | helm `checkbox` (CVA); ohne `babs-history-dialog`; `binary` inert (immer boolean); `disabled` über das FormControl steuern (nicht das Input) |
 | `form-datepicker` | ✅ migriert | helm `date-picker` (CVA, `Date`); ohne `babs-history-dialog`; luxon → natives `Intl`/Format; **nicht unterstützt**: `showTime`, `showWeek`, `showClear`, `dataType='string'`, `appendTo`/`baseZIndex` (Inputs bleiben für API-Kompat, sind aber inert); Wochenstart Sonntag statt Montag |

@@ -26,6 +26,7 @@
     "clsx": "^2.1.1",
     "embla-carousel": ">=8.0.0 <9.0.0",
     "embla-carousel-angular": "^22.0.0",
+    "ngx-mask": "^21.0.1",
     "ngx-quill": "^31.0.1",
     "ngx-scrollbar": "^19.1.5",
     "quill": "^2.0.3",
