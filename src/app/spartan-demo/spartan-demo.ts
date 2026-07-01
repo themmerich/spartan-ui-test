@@ -8,6 +8,7 @@ import { FormDatepickerComponent } from '../../libs/spartan/form-datepicker/form
 import { FormEditorComponent } from '../../libs/spartan/form-editor/form-editor.component';
 import { FormEmailComponent } from '../../libs/spartan/form-email/form-email.component';
 import { FormInputComponent } from '../../libs/spartan/form-input/form-input.component';
+import { FormInputMaskComponent } from '../../libs/spartan/form-input-mask/form-input-mask.component';
 import { FormNumberComponent } from '../../libs/spartan/form-number/form-number.component';
 import { FormPhoneComponent } from '../../libs/spartan/form-phone/form-phone.component';
 import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.component';
@@ -21,6 +22,7 @@ import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.
     FormEditorComponent,
     FormEmailComponent,
     FormInputComponent,
+    FormInputMaskComponent,
     FormNumberComponent,
     FormPhoneComponent,
     FormSelectComponent,
@@ -66,6 +68,11 @@ export class SpartanDemo {
   protected readonly editorForm = new FormGroup({
     description: new FormControl('<p>Ein <strong>formatierter</strong> Beispieltext.</p>'),
     notes: new FormControl('', [Validators.required]),
+  });
+
+  protected readonly maskForm = new FormGroup({
+    iban: new FormControl('DE44 5001 0517 5407 3249 31'),
+    zipCode: new FormControl('', [Validators.required]),
   });
 
   protected readonly checkboxForm = new FormGroup({
@@ -129,6 +136,8 @@ export class SpartanDemo {
         invoiceEmail: 'Rechnungs-E-Mail',
         description: 'Beschreibung',
         notes: 'Notizen',
+        iban: 'IBAN',
+        zipCode: 'Postleitzahl',
         newsletter: 'Newsletter abonnieren',
         terms: 'AGB akzeptieren',
         notifications: 'Benachrichtigungen aktivieren',
