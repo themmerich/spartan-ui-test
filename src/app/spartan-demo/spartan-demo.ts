@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { FormCheckboxComponent } from '../../libs/spartan/form-checkbox/form-checkbox.component';
 import { FormDatepickerComponent } from '../../libs/spartan/form-datepicker/form-datepicker.component';
+import { FormEmailComponent } from '../../libs/spartan/form-email/form-email.component';
 import { FormInputComponent } from '../../libs/spartan/form-input/form-input.component';
 import { FormNumberComponent } from '../../libs/spartan/form-number/form-number.component';
 import { FormPhoneComponent } from '../../libs/spartan/form-phone/form-phone.component';
@@ -16,6 +17,7 @@ import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.
     ReactiveFormsModule,
     FormCheckboxComponent,
     FormDatepickerComponent,
+    FormEmailComponent,
     FormInputComponent,
     FormNumberComponent,
     FormPhoneComponent,
@@ -52,6 +54,11 @@ export class SpartanDemo {
   protected readonly phoneForm = new FormGroup({
     mobile: new FormControl('+49 170 1234567', [Validators.pattern(/^[+0-9 /()-]{6,}$/)]),
     landline: new FormControl('', [Validators.required]),
+  });
+
+  protected readonly emailForm = new FormGroup({
+    email: new FormControl('thomas@acme.dev', [Validators.email]),
+    invoiceEmail: new FormControl('', [Validators.required, Validators.email]),
   });
 
   protected readonly checkboxForm = new FormGroup({
@@ -111,6 +118,8 @@ export class SpartanDemo {
         department: 'Abteilung',
         mobile: 'Mobil',
         landline: 'Festnetz',
+        email: 'E-Mail',
+        invoiceEmail: 'Rechnungs-E-Mail',
         newsletter: 'Newsletter abonnieren',
         terms: 'AGB akzeptieren',
         notifications: 'Benachrichtigungen aktivieren',
@@ -135,6 +144,7 @@ export class SpartanDemo {
           maxlengthNew: 'Höchstens {{maxLength}} Stellen erlaubt.',
           deactivatable: 'Dieser Eintrag kann nicht deaktiviert werden.',
           'pattern-phone-new': 'Ungültige Telefonnummer.',
+          'pattern-email-int': 'Ungültige E-Mail-Adresse.',
           requiredPattern: 'Bitte ein gültiges Datum eingeben ({{pattern}}).',
           requiredPatternBeforePrefix: 'Pflichtfeld – frühestens {{datum}} ({{pattern}}).',
           requiredPatternAfterPrefix: 'Pflichtfeld – spätestens {{datum}} ({{pattern}}).',
