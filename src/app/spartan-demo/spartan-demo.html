@@ -156,6 +156,21 @@
 
     <div hlmCard>
       <div hlmCardHeader>
+        <h3 hlmCardTitle>form-editor</h3>
+        <p hlmCardDescription>
+          Rich-Text-Editor (ngx-quill, Spartan-Styling) mit Label, HTML-Wert und Pflichtvalidierung.
+        </p>
+      </div>
+      <div hlmCardContent>
+        <form [formGroup]="editorForm" class="flex flex-col gap-4">
+          <babs-form-editor id="description" label="demo.description" />
+          <babs-form-editor id="notes" label="demo.notes" [required]="true" />
+        </form>
+      </div>
+    </div>
+
+    <div hlmCard>
+      <div hlmCardHeader>
         <h3 hlmCardTitle>Live-Werte</h3>
         <p hlmCardDescription>Direkt an die FormGroups gebunden.</p>
       </div>
@@ -167,8 +182,9 @@
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ checkboxForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ dateForm.value | json }}</pre>
         <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ emailForm.value | json }}</pre>
+        <pre class="overflow-x-auto rounded-md bg-muted p-3 text-xs">{{ editorForm.value | json }}</pre>
         <span class="text-sm text-muted-foreground">
-          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }} · form-datepicker: {{ dateForm.valid ? 'ja' : 'nein' }} · form-email: {{ emailForm.valid ? 'ja' : 'nein' }}
+          form-input: {{ form.valid ? 'ja' : 'nein' }} · form-number: {{ numberForm.valid ? 'ja' : 'nein' }} · form-select: {{ selectForm.valid ? 'ja' : 'nein' }} · form-phone: {{ phoneForm.valid ? 'ja' : 'nein' }} · form-checkbox: {{ checkboxForm.valid ? 'ja' : 'nein' }} · form-datepicker: {{ dateForm.valid ? 'ja' : 'nein' }} · form-email: {{ emailForm.valid ? 'ja' : 'nein' }} · form-editor: {{ editorForm.valid ? 'ja' : 'nein' }}
         </span>
       </div>
     </div>

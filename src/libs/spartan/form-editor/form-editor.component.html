@@ -1,0 +1,28 @@
+<div class="mt-2.5 w-full">
+  <label hlmLabel [for]="id()" class="mb-1.5">
+    {{ label() | translate }}
+    @if (required()) {
+      <span class="text-destructive">*</span>
+    }
+  </label>
+
+  <quill-editor
+    class="spartan-quill block"
+    [class.spartan-quill--invalid]="formControl?.invalid && formControl?.dirty"
+    format="html"
+    [id]="id()"
+    [formControl]="formControl!"
+    [placeholder]="placeholder() | translate"
+    [readOnly]="disabled()"
+    [modules]="modules"
+    [styles]="{ height: height() }"
+    [sanitize]="true"
+    (focusout)="onBlur($event)"
+  />
+
+  @if (formControl?.invalid && formControl?.dirty) {
+    <p role="alert" class="text-destructive mt-1.5 text-sm">
+      {{ getErrorMessage() | translate: { min: minLength(), max: maxLength() } }}
+    </p>
+  }
+</div>

@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { FormCheckboxComponent } from '../../libs/spartan/form-checkbox/form-checkbox.component';
 import { FormDatepickerComponent } from '../../libs/spartan/form-datepicker/form-datepicker.component';
+import { FormEditorComponent } from '../../libs/spartan/form-editor/form-editor.component';
 import { FormEmailComponent } from '../../libs/spartan/form-email/form-email.component';
 import { FormInputComponent } from '../../libs/spartan/form-input/form-input.component';
 import { FormNumberComponent } from '../../libs/spartan/form-number/form-number.component';
@@ -17,6 +18,7 @@ import { FormSelectComponent } from '../../libs/spartan/form-select/form-select.
     ReactiveFormsModule,
     FormCheckboxComponent,
     FormDatepickerComponent,
+    FormEditorComponent,
     FormEmailComponent,
     FormInputComponent,
     FormNumberComponent,
@@ -59,6 +61,11 @@ export class SpartanDemo {
   protected readonly emailForm = new FormGroup({
     email: new FormControl('thomas@acme.dev', [Validators.email]),
     invoiceEmail: new FormControl('', [Validators.required, Validators.email]),
+  });
+
+  protected readonly editorForm = new FormGroup({
+    description: new FormControl('<p>Ein <strong>formatierter</strong> Beispieltext.</p>'),
+    notes: new FormControl('', [Validators.required]),
   });
 
   protected readonly checkboxForm = new FormGroup({
@@ -120,6 +127,8 @@ export class SpartanDemo {
         landline: 'Festnetz',
         email: 'E-Mail',
         invoiceEmail: 'Rechnungs-E-Mail',
+        description: 'Beschreibung',
+        notes: 'Notizen',
         newsletter: 'Newsletter abonnieren',
         terms: 'AGB akzeptieren',
         notifications: 'Benachrichtigungen aktivieren',
