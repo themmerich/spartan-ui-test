@@ -2,7 +2,7 @@
 
 Migrierte Komponenten (von PrimeNG auf [Spartan UI](https://spartan.ng)), die in der echten App die bisherigen `src/libs/components/*`-Wrapper ersetzen.
 
-Stand: aktuell migriert: `form-input`, `form-number`, `form-select`, `form-phone`, `form-checkbox`, `form-datepicker`, `form-email`.
+Stand: aktuell migriert: `form-input`, `form-number`, `form-select`, `form-phone`, `form-checkbox`, `form-datepicker`, `form-email`, `form-editor`.
 
 ---
 
@@ -32,6 +32,9 @@ Direkt oder transitiv benötigt:
 - `@ng-icons/core` **und** `@ng-icons/lucide` (z. B. `lucideExternalLink` im Link-Addon)
 - `class-variance-authority`, `clsx`, `tailwind-merge` (helm-utils)
 - `@ngx-translate/core` (in der App bereits vorhanden)
+- **nur für `form-editor`**: `ngx-quill` + `quill` (helm hat keinen Rich-Text-Editor).
+  Zusätzlich `@import 'quill/dist/quill.snow.css';` global in `styles.scss` und
+  `"allowedCommonJsDependencies": ["quill-delta"]` in `angular.json`.
 
 ### 3. Die richtigen helm-Komponenten generieren
 
@@ -75,5 +78,6 @@ scannt (bei expliziten content-Globs ergänzen), sonst fehlen die Utility-Klasse
 | `form-select` | ✅ migriert | helm `select` (Overlay via `*hlmSelectPortal`); ohne `babs-history-dialog`; `showFilter`/`showClear` nicht unterstützt |
 | `form-phone`  | ✅ migriert | natives `type="tel"`; ohne `babs-history-dialog`                                             |
 | `form-email`  | ✅ migriert | natives `type="email"`; ohne `babs-history-dialog`                                            |
+| `form-editor` | ✅ migriert | **kein helm-Rich-Text-Editor** → `ngx-quill` (+ `quill`) mit Spartan-Styling (`quill.snow.css` + `::ng-deep`-Overrides); HTML-Wert bleibt erhalten; ohne `babs-history-dialog`; `blury` über natives `focusout` |
 | `form-checkbox` | ✅ migriert | helm `checkbox` (CVA); ohne `babs-history-dialog`; `binary` inert (immer boolean); `disabled` über das FormControl steuern (nicht das Input) |
 | `form-datepicker` | ✅ migriert | helm `date-picker` (CVA, `Date`); ohne `babs-history-dialog`; luxon → natives `Intl`/Format; **nicht unterstützt**: `showTime`, `showWeek`, `showClear`, `dataType='string'`, `appendTo`/`baseZIndex` (Inputs bleiben für API-Kompat, sind aber inert); Wochenstart Sonntag statt Montag |
